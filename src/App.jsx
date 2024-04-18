@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Protect from './routes/protect'
+import Sidebar from './components/Sidebar'
 
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
   return (
     <>
       <Protect>
-        <div className='flex mt-20 h-screen'>
+        <div className='flex h-screen'>
+          <Sidebar />
           <Outlet />
         </div>
       </Protect>

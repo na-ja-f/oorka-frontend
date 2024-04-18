@@ -72,6 +72,7 @@ function Login() {
         });
     });
   };
+
   return (
     <div className="flex w-full h-screen">
       <div className="w-full flex items-center justify-center lg:w-1/2">
@@ -125,6 +126,12 @@ function Login() {
                   autoComplete="off"
                 />
                 <ErrorMessage name="password" component={TextError} />
+              </div>
+              {/* Forgot Password Link */}
+              <div className="mb-6 text-sm text-red-500">
+                <Link to="/forgot-password" className="hover:underline">
+                  Forgot Password?
+                </Link>
               </div>
               {/* Login Button */}
               <button

@@ -4,4 +4,7 @@ export const userUrls = {
     resendOtp: "/resend-otp",
     googleAuth: "/google-auth",
     login: "/login",
+    forgotPassword: "/forgot-password",
+    forgotOtp: "/forgot-otp",
+    resetPassword: "/reset-password",
 }

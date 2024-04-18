@@ -60,6 +60,8 @@ export const postResendOTP = (email) => {
     });
 };
 
+// ! google authentication on signup and login
+// ? POST
 export const googleAuthenticate = (userData) => {
     return new Promise((resolve, reject) => {
         try {
@@ -82,6 +84,61 @@ export const postLogin = (userData) => {
     return new Promise((resolve, reject) => {
       try {
         apiCall("post", userUrls.login, userData)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      } catch (error) {
+        resolve({ status: 500, message: "Somethings wrong." });
+      }
+    });
+  };
+
+// ! forgot password
+// ?   POST
+export const forgotPassword = (email) => {
+    return new Promise((resolve, reject) => {
+      try {
+        console.log("hello"+email);
+        apiCall("post", userUrls.forgotPassword, email)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      } catch (error) {
+        resolve({ status: 500, message: "Somethings wrong." });
+      }
+    });
+  };
+
+// ! forgot password otp sent
+// ?   POST
+export const forgotOtp = (otp) => {
+    return new Promise((resolve, reject) => {
+      try {
+        apiCall("post", userUrls.forgotOtp, otp)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      } catch (error) {
+        resolve({ status: 500, message: "Somethings wrong." });
+      }
+    });
+  };
+
+// ! renew password
+// ?   POST
+export const resetPassword = (email) => {
+    return new Promise((resolve, reject) => {
+      try {
+        apiCall("post", userUrls.resetPassword, email)
           .then((response) => {
             resolve(response);
           })

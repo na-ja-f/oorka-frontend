@@ -3,11 +3,15 @@ import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import Otp from "../pages/Otp";
 import HomePage from "../pages/HomePage";
+import ForgotPassword from "../pages/ForgotPassword";
+import ForgotOtp from "../pages/ForgotOtp";
+import RenewPassword from "../pages/RenewPassword";
+import App from "../App";
 
 const appRouter = createBrowserRouter([
     {
         path: "/",
-        element: <HomePage />
+        element: <App />
     },
     {
         path: "/login",
@@ -20,6 +24,18 @@ const appRouter = createBrowserRouter([
     {
         path: "/otp",
         element: <Otp />
+    },
+    {
+        path: "/forgot-password",
+        element: <ForgotPassword />
+    },
+    {
+        path: "/forgot-otp",
+        element: <ForgotOtp />
+    },
+    {
+        path: "/renew-password",
+        element: <RenewPassword />
     },
 ])
 
