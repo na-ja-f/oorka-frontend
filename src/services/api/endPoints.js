@@ -8,3 +8,7 @@ export const userUrls = {
     forgotOtp: "/forgot-otp",
     resetPassword: "/reset-password",
 }
+
+export const postUrls = {
+    addPost: '/post/add-post'
+}

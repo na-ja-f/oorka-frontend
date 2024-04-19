@@ -11,7 +11,13 @@ import App from "../App";
 const appRouter = createBrowserRouter([
     {
         path: "/",
-        element: <App />
+        element: <App />,
+        children: [
+            {
+                path:'/',
+                element:<HomePage />
+            }
+        ]
     },
     {
         path: "/login",

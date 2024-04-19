@@ -79,16 +79,6 @@ function Sidebar() {
                             <span className="mx-5 ">Messages</span>
                         </NavLink>
                         <NavLink
-                            className={`flex items-center px-4 mt-2 py-2 ${location.pathname === "/messages"
-                                ? "text-myViolet border-r-2 border-myViolet"
-                                : "text-myText"
-                                }  rounded-lg`}
-                            to={"/chat"}
-                        >
-                            <ImagePlus />
-                            <span className="mx-5 ">Create</span>
-                        </NavLink>
-                        <NavLink
                             className={`flex items-center px-4 mt-2 py-2 ${location.pathname === "/follow-requests"
                                 ? "text-myViolet border-r-2 border-myViolet"
                                 : "text-myText"

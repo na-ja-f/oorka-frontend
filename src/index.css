@@ -6,3 +6,23 @@ body{
     font-family: "Poppins", sans-serif;
   }
   
+  .addpost-popup{
+    width: 100%;
+  
+    background-color: rgba(0, 0, 0, 0.407);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+  }
+
+  .image-preview{
+   width: 400px;
+   margin: 10px;
+   border-radius: 10px;
+
+}
