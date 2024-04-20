@@ -10,5 +10,9 @@ export const userUrls = {
 }
 
 export const postUrls = {
-    addPost: '/post/add-post'
+    addPost: '/post/add-post',
+    getPosts: '/post/get-post',
+    deletePost: '/post/delete-post',
+    editPost: '/post/edit-post',
+
 }

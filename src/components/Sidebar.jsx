@@ -21,8 +21,8 @@ function Sidebar() {
 
     return (
         <>
-            <aside className="fixed z-30flex lg:ml-24 flex-col w-64 h-full shadow-2xl shadow-myViolet px-4 py-5 overflow-none rounded-xl rtl:border-r-0 rtl:border-l  bg-myBiege  dark:border-gray-700">
-                <div className="flex flex-col items-center">
+            <aside className="fixed shadow-2xl z-30flex lg:ml-24 flex-col w-64 px-4 py-5 mt-16 overflow-none rounded-xl rtl:border-r-0 rtl:border-l bg-white  dark:border-gray-700">
+                {/* <div className="flex flex-col items-center">
                     <img
                         className="object-cover h-28  mx-2 rounded-full shadow-sm shadow-myViolet"
                         src={user.profileImg}
@@ -34,7 +34,7 @@ function Sidebar() {
                         </h4>
                     </div>
                     <hr className="w-full border border-gray-400 mt-4 shadow-2xl" />
-                </div>
+                </div> */}
 
                 <div className="flex flex-col justify-between flex-1 mt-5">
                     <nav>
@@ -121,12 +121,10 @@ function Sidebar() {
                         {/* Add more navigation links */}
                     </nav>
                 </div>
-                <hr className="border border-gray-400 w-full  mt-8 mb-4"/>
                 <div
                     onClick={handleLogout}
-                    className="flex text-myText cursor-pointer px-4"
+                    className="flex text-myText cursor-pointer mt-32 px-4"
                 >
-                    
                     <LogOut />
                     <button className="mx-5 ">Logout</button>
                 </div>

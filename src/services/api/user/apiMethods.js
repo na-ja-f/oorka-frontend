@@ -168,3 +168,57 @@ export const addPost = (postData) => {
     }
   });
 }
+
+// ! get  all posts
+// ? get
+export const getPosts = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.getPosts, userId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! delete post
+// ? DELETE 
+export const deletePost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.deletePost, postData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! edit post
+// ? POST 
+export const editPost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("put", postUrls.editPost, postData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
