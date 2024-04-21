@@ -14,5 +14,10 @@ export const postUrls = {
     getPosts: '/post/get-post',
     deletePost: '/post/delete-post',
     editPost: '/post/edit-post',
+    getUserPosts: '/post/user-post'
 
+}
+
+export const adminUrl = {
+    login: "/admin/login"
 }

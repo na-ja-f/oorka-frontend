@@ -222,3 +222,22 @@ export const editPost = (postData) => {
     }
   });
 }
+
+// ! user posts
+// ? GET 
+export const getUserPost = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrls.getUserPosts}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}

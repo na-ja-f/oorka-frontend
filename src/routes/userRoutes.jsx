@@ -7,6 +7,8 @@ import ForgotPassword from "../pages/ForgotPassword";
 import ForgotOtp from "../pages/ForgotOtp";
 import RenewPassword from "../pages/RenewPassword";
 import App from "../App";
+import Profile from "../pages/Profile";
+import { adminLoginRouter,adminRouter } from "./adminRoutes";
 
 const appRouter = createBrowserRouter([
     {
@@ -16,7 +18,11 @@ const appRouter = createBrowserRouter([
             {
                 path:'/',
                 element:<HomePage />
-            }
+            },
+            {
+                path:'/profile',
+                element:<Profile />
+            },
         ]
     },
     {
@@ -43,6 +49,9 @@ const appRouter = createBrowserRouter([
         path: "/renew-password",
         element: <RenewPassword />
     },
+
+    adminRouter,
+    adminLoginRouter
 ])
 
 export default appRouter;
