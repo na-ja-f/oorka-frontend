@@ -27,6 +27,46 @@ function Story() {
                             </div>
                             <a href="#">user</a>
                         </li>
+                        <li className="flex flex-col items-center space-y-1 ">
+                            <div className="bg-gradient-to-b from-purple-600 to-blue-400 p-0.5 rounded-full">
+                                <a className="bg-white block rounded-full p-0.5  hover:scale-110 transform transition" href="#">
+                                    <img className="h-14 w-14 rounded-full bg-gray-500" alt="" />
+                                </a>
+                            </div>
+                            <a href="#">user</a>
+                        </li>
+                        <li className="flex flex-col items-center space-y-1 ">
+                            <div className="bg-gradient-to-b from-purple-600 to-blue-400 p-0.5 rounded-full">
+                                <a className="bg-white block rounded-full p-0.5  hover:scale-110 transform transition" href="#">
+                                    <img className="h-14 w-14 rounded-full bg-gray-500" alt="" />
+                                </a>
+                            </div>
+                            <a href="#">user</a>
+                        </li>
+                        <li className="flex flex-col items-center space-y-1 ">
+                            <div className="bg-gradient-to-b from-purple-600 to-blue-400 p-0.5 rounded-full">
+                                <a className="bg-white block rounded-full p-0.5  hover:scale-110 transform transition" href="#">
+                                    <img className="h-14 w-14 rounded-full bg-gray-500" alt="" />
+                                </a>
+                            </div>
+                            <a href="#">user</a>
+                        </li>
+                        <li className="flex flex-col items-center space-y-1 ">
+                            <div className="bg-gradient-to-b from-purple-600 to-blue-400 p-0.5 rounded-full">
+                                <a className="bg-white block rounded-full p-0.5  hover:scale-110 transform transition" href="#">
+                                    <img className="h-14 w-14 rounded-full bg-gray-500" alt="" />
+                                </a>
+                            </div>
+                            <a href="#">user</a>
+                        </li>
+                        <li className="flex flex-col items-center space-y-1 ">
+                            <div className="bg-gradient-to-b from-purple-600 to-blue-400 p-0.5 rounded-full">
+                                <a className="bg-white block rounded-full p-0.5  hover:scale-110 transform transition" href="#">
+                                    <img className="h-14 w-14 rounded-full bg-gray-500" alt="" />
+                                </a>
+                            </div>
+                            <a href="#">user</a>
+                        </li>
 
                 </ul>
             </div>

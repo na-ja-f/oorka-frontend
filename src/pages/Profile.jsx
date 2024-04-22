@@ -33,7 +33,7 @@ function Profile() {
 
     return (
         <div className="ml-5 mt-11 w-8/12 ">
-            <div style={{ position: 'sticky', top: '64px', zIndex: 999 }} className=" ms-96 flex mt-5 flex-col shadow-2xl bg-white pb-3 pl-5 w-11/12 rounded-xl">
+            <div className=" ms-96 flex mt-5 flex-col shadow-2xl bg-white pb-3 pl-5 w-11/12 rounded-xl">
                 <div className="flex gap-20 ">
                     <div className="gap-4">
                         <img className=" h-36 w-36 rounded-full" src={user.profileImg} alt="profile" />

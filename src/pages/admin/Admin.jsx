@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Navbar from "../../components/admin/Navbar";
 
 function Admin() {
     const selectAdmin = (state) => state.adminAuth.admin;
@@ -14,7 +15,7 @@ function Admin() {
     },[admin, navigate])
   return (
     <div className="flex">
-      <h1>hello</h1>
+      <Navbar />
       <Outlet />
     </div>
   )

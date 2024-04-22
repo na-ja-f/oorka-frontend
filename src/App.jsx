@@ -17,7 +17,8 @@ function App() {
   return (
     <>
       <Protect>
-        <div className='flex h-screen'>
+        <div style={{backgroundColor: 'rgb(243,244,246)'}} className='h-14 fixed inset-x-0 top-0 z-50 '></div>
+        <div className='flex h-screen mb-64'>
           <Sidebar />
           <Outlet />
         </div>
