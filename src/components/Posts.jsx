@@ -49,7 +49,7 @@ function Posts({ post }) {
 
     const confirmDeletePost = () => {
         if (deletePostId) {
-            handleDelete(deletePostId, post.userId._id)
+            handleDelete(deletePostId, post?.userId?._id)
             toggleDropdown();
             setDeletePostId(null)
         }
@@ -65,10 +65,13 @@ function Posts({ post }) {
                 <div className="flex  flex-col ">
                     <div className="bg-white border p-4 mb-1 rounded-lg max-w-full">
                         <div className="flex items-center mb-2">
-                            <img src={post.userId.profileImg} alt="user" className="h-10 mr-2 rounded-full" />
-                            <p className="text-gray-800 font-bold mx-1">
-                                {post.userId.name}
-                            </p>
+                            <Link to={user._id === post?.userId?._id ? "/profile" : `/users-profile/${post?.userId?._id}`}
+                            className="flex items-center">
+                                <img src={post?.userId?.profileImg} alt="user" className="h-10 mr-2 rounded-full" />
+                                <p className="text-gray-800 font-bold mx-1">
+                                    {post?.userId?.name}
+                                </p>
+                            </Link>
                             <div className="flex items-center">
 
                                 {post.userId?.isVerified && <svg
@@ -103,14 +106,14 @@ function Posts({ post }) {
                                 </button>
                                 {isOpen && (
                                     <div className="absolute z-40 right-96 mt-2 w-40 bg-white divide-y divide-gray-100 rounded-lg shadow-lg">
-                                        {post.userId._id === user._id && (
+                                        {post?.userId?._id === user._id && (
                                             <>
                                                 <button className="block px-4 py-2 hover:bg-gray-100 w-40"
                                                     onClick={handleEdit}>
                                                     Edit
                                                 </button>
                                                 <button className="block px-4 py-2 hover:bg-gray-100 w-40"
-                                                    onClick={() => setDeletePostId(post._id)}>
+                                                    onClick={() => setDeletePostId(post?._id)}>
                                                     Delete
                                                 </button>
                                             </>
@@ -131,14 +134,14 @@ function Posts({ post }) {
                         </div>
                         <div className="mb-3">
                             <p className="text-black text-md">
-                            <span className="font-bold mr-4">{post.userId.name}</span> "{post.description}"
+                                <span className="font-bold mr-4">{post?.userId?.name}</span> "{post.description}"
                             </p>
                             <p className="text-gray-500 text-sm">
-                                    - {formatDistanceToNow(
-                                        new Date(post.date),
-                                        { addSuffix: true }
-                                    )}
-                                </p>
+                                - {formatDistanceToNow(
+                                    new Date(post.date),
+                                    { addSuffix: true }
+                                )}
+                            </p>
                         </div>
                         {/* bottom section(likes and comments) */}
                         <div className="flex items-center justify-between text-gray-500">

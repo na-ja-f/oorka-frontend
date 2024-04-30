@@ -49,11 +49,11 @@ function Sidebar() {
                             <span className="ml-5">Dashboard</span>
                         </NavLink>
                         <NavLink
-                            className={`flex items-center px-4 mt-2 py-2 ${location.pathname === "/notifications"
+                            className={`flex items-center px-4 mt-2 py-2 ${location.pathname === "/search"
                                 ? "text-myViolet border-r-2 border-myViolet"
                                 : "text-myText"
                                 }  rounded-lg`}
-                            to={"/"}
+                            to={"/search"}
                         >
                             <Search />
                             <span className="mx-5 ">Search</span>

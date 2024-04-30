@@ -1,23 +1,34 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getUserPost } from "../services/api/user/apiMethods";
+import { getUserPost, getUserConnections } from "../services/api/user/apiMethods";
 import { setPosts } from "../redux/reducers/authSlice";
 import { Tooltip } from "flowbite-react";
 import { BadgeDollarSign, Pencil } from "lucide-react";
 import PostGallery from "../components/PostGallery";
+import FollowersList from "../components/FollowersList";
+import FollowingList from "../components/FollowingList";
+import { useNavigate } from "react-router-dom";
+import ProfileEdit from '../components/ProfileEdit'
+
 
 
 function Profile() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const selectPosts = (state) => state.auth.posts
     const selectUser = (state) => state.auth.user
     const user = useSelector(selectUser)
     const userId = user._id;
     const posts = useSelector(selectPosts) || []
 
+    const [isProfileEdit, setIsProfileEdit] = useState(false);
+    const [followers, setFollowers] = useState([]);
+    const [following, setFollowing] = useState([]);
+    const [isFollowingModal, setIsFollowingModal] = useState(false);
+    const [isFollowersModal, setIsFollowersModal] = useState(false);
+
     useEffect(() => {
         try {
-            console.log(posts);
             getUserPost(userId)
                 .then((response) => {
                     const postData = response.data
@@ -26,19 +37,41 @@ function Profile() {
                 .catch((error) => {
                     console.log(error);
                 })
+
+            getUserConnections({ userId })
+                .then((response) => {
+                    const connectionData = response.data.connection;
+                    setFollowing(connectionData.following)
+                    setFollowers(connectionData.followers);
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                });
         } catch (error) {
             console.log(error);
         }
     }, [])
 
+    const handleFollowersModal = () => {
+        return setIsFollowersModal(!isFollowersModal)
+    }
+
+    const handleFollowingModal = () => {
+        return setIsFollowingModal(!isFollowingModal)
+    }
+
+    const handleEditClose = () => {
+        return setIsProfileEdit(!isProfileEdit)
+    }
+
     return (
         <div className="ml-5 mt-11 w-8/12 ">
-            <div className=" ms-96 flex mt-5 flex-col shadow-2xl bg-white pb-3 pl-5 w-11/12 rounded-xl">
+            <div className=" ms-96 flex mt-5 flex-col shadow-2xl bg-white p-4 pb-3 pl-5 w-11/12 rounded-xl">
                 <div className="flex gap-20 ">
                     <div className="gap-4">
-                        <img className=" h-36 w-36 rounded-full" src={user.profileImg} alt="profile" />
+                        <img className=" h-36 rounded-full border-2 border-myViolet" src={user.profileImg} alt="profile" />
                         <div className="flex items-top ml-3 justify-center gap-2">
-                            <p className="font-medium text-lg">{user.username}</p>
+                            <p className="font-medium text-lg mt-2">{user.username}</p>
                             {user?.isVerified && (
                                 <svg
                                     viewBox="0 0 22 22"
@@ -52,17 +85,17 @@ function Profile() {
                                 </svg>
                             )}
                         </div>
-                        <p className="text-sm flex justify-center text-gray-600">{user?.bio}hello world</p>
+                        <p className="text-sm flex justify-center text-gray-600">{user?.bio}</p>
 
                     </div>
                     <div className="flex flex-col mt-4">
                         <div className="flex gap-6 mt-5">
-                            <div className="flex flex-col cursor-pointer items-center">
-                                <p className="font-medium text-lg">0</p>
+                            <div onClick={handleFollowingModal} className="flex flex-col cursor-pointer items-center">
+                                <p className="font-medium text-lg">{following.length}</p>
                                 <p className="text-sm">Following</p>
                             </div>
-                            <div className="flex flex-col cursor-pointer items-center">
-                                <p className="font-medium text-lg">0</p>
+                            <div onClick={handleFollowersModal} className="flex flex-col cursor-pointer items-center">
+                                <p className="font-medium text-lg">{followers.length}</p>
                                 <p className="text-sm">Followers</p>
                             </div>
                             <div className="flex flex-col cursor-pointer items-center">
@@ -72,10 +105,10 @@ function Profile() {
                         </div>
                     </div>
                     <div className="flex flex-col gap-5 ml-10 mt-10">
-                        <div className="flex gap-3">
+                        <div onClick={() => setIsProfileEdit(true)}
+                            className="flex gap-3 cursor-pointer">
                             <Tooltip content="Edit Profile" style="light">
                                 <Pencil
-                                    className=" cursor-pointer"
                                     size={20}
                                     color="black"
                                 />
@@ -101,6 +134,22 @@ function Profile() {
                     </div>
                 })}
             </div>
+            {isProfileEdit && <ProfileEdit user={user} onClose={handleEditClose} />}
+
+            {isFollowersModal && (
+                <FollowersList
+                    followers={followers}
+                    followingUsers={following}
+                    setFollowingUsers={setFollowing}
+                    onClose={handleFollowersModal} />
+            )}
+            {isFollowingModal && (
+                <FollowingList
+                    currentUser={userId}
+                    followingUsers={following}
+                    setFollowingUsers={setFollowing}
+                    onClose={handleFollowingModal} />
+            )}
         </div>
     )
 }

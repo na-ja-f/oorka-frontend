@@ -1,5 +1,5 @@
 import { apiCall } from "./apiCalls"
-import { userUrls, postUrls } from "../endPoints"
+import { userUrls, postUrls, connectionUrls } from "../endPoints"
 
 // ! user register
 // ? POST
@@ -230,6 +230,168 @@ export const getUserPost = (userId) => {
     try {
       const url = `${postUrls.getUserPosts}/${userId}`
       apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! user details
+// ? GET 
+export const getUserDetails = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", userUrls.getUserDetails + `/${userId}`, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get connections of a user
+// ? POST 
+export const getUserConnections = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.getConnection, userId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! follow a user
+// ? POST 
+export const followUser = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.follow, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! un-follow a user
+// ? POST 
+export const unFollowUser = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.unFollow, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get all requested  users
+// ? POST 
+export const getRequestedUsers = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.requestedUsers, userId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! accept follow request
+// ? POST 
+export const acceptFollowRequest = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.acceptRequest, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! reject follow request
+// ? POST 
+export const rejectFollowRequest = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.rejectRequest, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! edit user profile
+// ? POST 
+export const editProfile = (userData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("patch", userUrls.editProfile, userData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! search users
+// ? POST 
+export const getSearchUsers = (searchTerm) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.searchUsers, searchTerm)
         .then((response) => {
           resolve(response);
         })

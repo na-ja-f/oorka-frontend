@@ -8,7 +8,10 @@ import ForgotOtp from "../pages/ForgotOtp";
 import RenewPassword from "../pages/RenewPassword";
 import App from "../App";
 import Profile from "../pages/Profile";
-import { adminLoginRouter,adminRouter } from "./adminRoutes";
+import { adminLoginRouter, adminRouter } from "./adminRoutes";
+import UsersProfile from "../pages/UsersProfile";
+import FollowRequests from "../pages/FollowRequests";
+import Search from "../pages/Search";
 
 const appRouter = createBrowserRouter([
     {
@@ -16,12 +19,24 @@ const appRouter = createBrowserRouter([
         element: <App />,
         children: [
             {
-                path:'/',
-                element:<HomePage />
+                path: '/',
+                element: <HomePage />
             },
             {
-                path:'/profile',
-                element:<Profile />
+                path: '/profile',
+                element: <Profile />
+            },
+            {
+                path: '/users-profile/:userId',
+                element: <UsersProfile />
+            },
+            {
+                path: '/follow-requests',
+                element: <FollowRequests />
+            },
+            {
+                path: '/search',
+                element: <Search />
             },
         ]
     },
