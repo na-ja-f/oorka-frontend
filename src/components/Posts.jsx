@@ -6,7 +6,7 @@ import { Modal, Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { Carousel } from "flowbite-react";
 import { formatDistanceToNow } from "date-fns";
-import { deletePost, likePost, getCommentsCount } from "../services/api/user/apiMethods";
+import { deletePost, likePost, getCommentsCount, savePost } from "../services/api/user/apiMethods";
 import EditPost from "./EditPost";
 import LikedUsers from "./LikedUsers";
 import {
@@ -38,9 +38,12 @@ function Posts({ post }) {
     const [showLikedUserPopup, setShowLikedUserPopup] = useState(false)
     const [showCommentModal, setShowCommentModal] = useState(false)
     const [commentsCount, setCommentsCount] = useState(0)
+    const [isSavedByUser, setIsSavedByUser] = useState(user?.savedPost.includes(post._id))
+
     const images = post.imageUrl
 
     useEffect(() => {
+        console.log(user.savedPost);
         const postId = post._id
         getCommentsCount(postId)
             .then((response) => {
@@ -112,6 +115,22 @@ function Posts({ post }) {
 
     const toggleLikedUserPopup = () => {
         setShowLikedUserPopup(!showLikedUserPopup)
+    }
+
+    const handleSave = (postId, userId) => {
+        try {
+            savePost({ postId, userId })
+                .then((response) => {
+                    const userData = response.data
+                    dispatch(loginSuccess({ user: userData }))
+                    setIsSavedByUser(!isSavedByUser)
+                })
+                .catch((error) => {
+                    toast.error(error.message);
+                });
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     return (
@@ -203,10 +222,10 @@ function Posts({ post }) {
                                     )}
 
                                 </div>
-                                <button className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1 transform transition-all duration-300 hover:scale-105">
+                                <button onClick={() => handleSave(post._id, user._id)} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1 transform transition-all duration-300 hover:scale-105">
                                     <Bookmark
                                         color="gray"
-                                        // fill={isSavedByUser ? "grey" : "none"}
+                                        fill={isSavedByUser ? "grey" : "none"}
                                         size={22}
                                     />
                                 </button>

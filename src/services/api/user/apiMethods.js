@@ -513,3 +513,40 @@ export const deleteComment = (commentId) => {
     }
   });
 }
+
+// ! save post 
+// ? POST 
+export const savePost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.savePost, postData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get saved post 
+// ? GET 
+export const getSavedPost = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrls.getSavedPost}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}

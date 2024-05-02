@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { CheckCheck, BookLockIcon, Search, X, Check, LockKeyhole } from "lucide-react";
 import { Button, Modal, Pagination } from "flowbite-react";
 import { adminUsersList, userBlock } from "../../services/api/admin/apiMethods";
 
 function UsersList() {
-    const [loading, setLoading] = useState(false)
     const [users, setUsers] = useState([])
     const [filteredUsers, setFilteredUsers] = useState([])
     const [openModal, setOpenModal] = useState(false)
@@ -14,14 +13,13 @@ function UsersList() {
     const [currentPage, setCurrentPage] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
 
-    const onPageChange = (page) => setCurrentPage(page)
+    const onPageChange = (page) =>  setCurrentPage(page)
 
     useEffect(() => {
         fetchUsers();
     }, [currentPage])
 
     const fetchUsers = () => {
-        setLoading(true);
         adminUsersList(currentPage)
             .then((response) => {
                 const userData = response.data;
@@ -36,7 +34,6 @@ function UsersList() {
                 toast.error("failed to fetch users")
             })
             .finally(() => {
-                setLoading(false)
             })
     }
 
@@ -83,6 +80,12 @@ function UsersList() {
             })
     }
 
+    const handleSearch = (searchText) => {
+        const filtered = users.filter((user) =>
+            user.name.toLowerCase().includes(searchText.toLowerCase()))
+        setFilteredUsers(filtered)
+    }
+
     return (
         <div className="w-8/12 mt-16 overflow-hidden rounded-lg border border-gray-200 shadow-md m-5 ml-24">
             <div className="w-12/12">
@@ -96,13 +99,8 @@ function UsersList() {
                         className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-myViolet focus:border-myViolet"
                         placeholder="Search"
                         required
+                        onChange={(e) => handleSearch(e.target.value)}
                     />
-                    <button
-                        type="submit"
-                        className="text-white absolute right-2.5 bottom-2.5 bg-myViolet hover:bg-purple-950 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
-                    >
-                        Search
-                    </button>
                 </div>
             </div>
             <table className=" w-full border-collapse bg-white text-left text-sm text-gray-500">
@@ -192,17 +190,17 @@ function UsersList() {
                                 </td>
                             </tr>
                         ))}
-                    {/* Additional rows can be added here */}
                 </tbody>
 
-                {/* <div className="flex overflow-x-auto sm:justify-center">
+                <div className="flex overflow-x-auto sm:justify-center">
                     <Pagination
                         layout="table"
                         currentPage={currentPage}
-                        totalPages={totalCount} // Change this to the total number of pages
+                        totalPages={totalCount} 
                         onPageChange={onPageChange}
                         showIcons
-                    />    </div> */}
+                    />
+                </div>
             </table>
             <Modal
                 show={openModal}

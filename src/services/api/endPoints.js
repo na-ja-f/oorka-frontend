@@ -24,7 +24,8 @@ export const postUrls = {
     addComment: '/post/add-comment',
     replyComment: '/post/reply-comment',
     deleteComment: '/post/delete-comment',
-
+    savePost: 'post/save-post',
+    getSavedPost: 'post/saved-post'
 }
 
 export const adminUrl = {

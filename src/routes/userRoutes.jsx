@@ -12,6 +12,7 @@ import { adminLoginRouter, adminRouter } from "./adminRoutes";
 import UsersProfile from "../pages/UsersProfile";
 import FollowRequests from "../pages/FollowRequests";
 import Search from "../pages/Search";
+import SavedPost from "../pages/SavedPost";
 
 const appRouter = createBrowserRouter([
     {
@@ -37,6 +38,10 @@ const appRouter = createBrowserRouter([
             {
                 path: '/search',
                 element: <Search />
+            },
+            {
+                path: '/saved-post',
+                element: <SavedPost />
             },
         ]
     },
