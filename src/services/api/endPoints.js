@@ -17,7 +17,13 @@ export const postUrls = {
     getPosts: '/post/get-post',
     deletePost: '/post/delete-post',
     editPost: '/post/edit-post',
-    getUserPosts: '/post/user-post'
+    getUserPosts: '/post/user-post',
+    likePost: '/post/like-post',
+    commentsCount: '/post/comments-count',
+    getComments: '/post/get-comments',
+    addComment: '/post/add-comment',
+    replyComment: '/post/reply-comment',
+    deleteComment: '/post/delete-comment',
 
 }
 

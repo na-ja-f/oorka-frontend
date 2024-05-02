@@ -13,6 +13,9 @@ function EditPost({ post, onCancelEdit }) {
     const user = useSelector(selectUser) || ""
     const userId = user._id || ""
 
+    const [hideLikes, setHideLikes] = useState(post.hideLikes);
+    const [hideComment, setHideComment] = useState(post.hideComment);
+
     const formik = useFormik({
         initialValues: {
             description: post.description
@@ -24,7 +27,9 @@ function EditPost({ post, onCancelEdit }) {
                 await editPost({
                     userId,
                     postId,
-                    description
+                    description,
+                    hideComment,
+                    hideLikes,
                 }).then((response) => {
                     const postData = response.data;
                     dispatch(setPosts({ posts: postData.posts }))
@@ -37,6 +42,14 @@ function EditPost({ post, onCancelEdit }) {
             }
         }
     })
+
+    const handleHideLikesToggle = () => {
+        setHideLikes(!hideLikes);
+    };
+
+    const handleHideCommentToggle = () => {
+        setHideComment(!hideComment);
+    };
 
     return (
         <div className="addpost-popup z-50">
@@ -71,6 +84,34 @@ function EditPost({ post, onCancelEdit }) {
                                     </p>
                                 )}
                             </div>
+                        </div>
+                        <div className="icons flex text-gray-500 m-2">
+                            <label className="inline-flex items-center me-5 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    value=""
+                                    className="sr-only peer"
+                                    checked={hideComment}
+                                    onChange={handleHideCommentToggle}
+                                />
+                                <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700   peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                                <span className="ms-3 text-sm font-semibold text-gray-900 dark:text-gray-900">
+                                    Hide Comments
+                                </span>
+                            </label>
+                            <label className="inline-flex items-center me-5 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    value=""
+                                    className="sr-only peer"
+                                    checked={hideLikes}
+                                    onChange={handleHideLikesToggle}
+                                />
+                                <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700   peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                                <span className="ms-3 text-sm font-semibold text-gray-900 dark:text-gray-900">
+                                    Hide Likes
+                                </span>
+                            </label>
                         </div>
                         <div className="buttons flex">
                             <div

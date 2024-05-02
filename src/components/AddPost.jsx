@@ -18,15 +18,27 @@ function AddPost({ setNewPost, setShowModal }) {
     const [isLoading, setIsLoading] = useState(false)
     const [croppedImage, setCroppedImage] = useState([])
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [hideLikes, setHideLikes] = useState(false);
+    const [hideComment, setHideComment] = useState(false);
 
     const fileInputRef = useRef(null)
 
     const resetState = () => {
+        setHideLikes(false)
+        setHideComment(false)
         setCroppedImage([])
         setCurrentImageIndex(0)
         formik.values.images = ([])
         formik.values.description = ''
     }
+
+    const handleHideLikesToggle = () => {
+        setHideLikes(!hideLikes)
+    };
+
+    const handleHideCommentToggle = () => {
+        setHideComment(!hideLikes)
+    };
 
     const handleButtonClick = () => {
         fileInputRef.current?.setAttribute("accept", "image/*")
@@ -85,7 +97,9 @@ function AddPost({ setNewPost, setShowModal }) {
             addPost({
                 userId,
                 imageUrls,
-                description
+                description,
+                hideLikes,
+                hideComment,
             })
                 .then((response) => {
                     const data = response.data
@@ -171,6 +185,41 @@ function AddPost({ setNewPost, setShowModal }) {
                                             {formik.errors.images}
                                         </p>
                                     )}
+                                    <div className="icons flex mt-7 text-gray-500 m-2">
+                                        <input
+                                            type="file"
+                                            ref={fileInputRef}
+                                            style={{ display: "none" }}
+                                            onChange={handleFileChange}
+                                            multiple
+                                        />
+                                        <label className="flex items-center me-2 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                value=""
+                                                className="sr-only peer"
+                                                checked={hideComment}
+                                                onChange={handleHideCommentToggle}
+                                            />
+                                            <div className="relative w-10 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700   peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                                            <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">
+                                                Hide Comments
+                                            </span>
+                                        </label>
+                                        <label className="flex items-center cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                value=""
+                                                className="sr-only peer"
+                                                checked={hideLikes}
+                                                onChange={handleHideLikesToggle}
+                                            />
+                                            <div className="relative w-10 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700   peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                                            <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">
+                                                Hide Likes
+                                            </span>
+                                        </label>
+                                    </div>
                                 </div>
                                 <div className="flex flex-col mb-10">
                                     <p className=" font-semibold text-myText mb-2">Description</p>
