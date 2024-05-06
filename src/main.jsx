@@ -8,15 +8,18 @@ import { Toaster } from 'sonner'
 import { PersistGate } from 'redux-persist/integration/react'
 import { RouterProvider } from 'react-router-dom'
 import appRouter from './routes/userRoutes.jsx'
+// import { SocketProvider } from './utils/context/SocketContext.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <Toaster richColors position='top-right' />
     <PersistGate loading={null} persistor={persistor}>
-      <RouterProvider router={appRouter}>
-        <App />
-      </RouterProvider>
+      {/* <SocketProvider> */}
+        <RouterProvider router={appRouter}>
+          <App />
+        </RouterProvider>
+      {/* </SocketProvider> */}
     </PersistGate>
   </Provider>
 )

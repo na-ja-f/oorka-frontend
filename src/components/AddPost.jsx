@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { Spinner } from "flowbite-react";
 import { addPost } from "../services/api/user/apiMethods";
 import CropImage from "./CropImg";
+import BouncingBall from './BouncingBall'
+import FilterComponent from "./FilterComponent";
 
 
 function AddPost({ setNewPost, setShowModal }) {
@@ -20,6 +22,10 @@ function AddPost({ setNewPost, setShowModal }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [hideLikes, setHideLikes] = useState(false);
     const [hideComment, setHideComment] = useState(false);
+
+    const [filteredImage, setFilteredImage] = useState([])
+    const [currentCroppedImgeIndex, setCurrentCroppedImageIndex] = useState(0)
+    const [ croppedImageLength, setCroppedImageLength] = useState(0);
 
     const fileInputRef = useRef(null)
 
@@ -56,6 +62,7 @@ function AddPost({ setNewPost, setShowModal }) {
                 return
             }
             const imageUrls = selectedFiles.map(file => URL.createObjectURL(file))
+            setCroppedImageLength(imageUrls.length)
             formik.setFieldValue("images", imageUrls)
         }
     }
@@ -72,7 +79,7 @@ function AddPost({ setNewPost, setShowModal }) {
             console.log("hello");
             setIsLoading(true)
             const { description } = formik.values
-            const imageUrls = []
+            const imageUrls = filteredImage.map((filteredImg => filteredImg.url))
             for (const image of formik.values.images) {
                 const response = await fetch(image)
                 const blob = await response.blob();
@@ -132,6 +139,10 @@ function AddPost({ setNewPost, setShowModal }) {
         setCurrentImageIndex((prevIndex) => prevIndex + 1)
     }
 
+    const handleNextFilteredImage = () => {
+        setCurrentCroppedImageIndex((prevIndex) => prevIndex + 1)
+    }
+
     return (
         <div className=" ms-96 w-96 shadow-2xl ">
             <div className="addpost-popup z-50">
@@ -180,11 +191,25 @@ function AddPost({ setNewPost, setShowModal }) {
                                                 )}
                                             </React.Fragment>
                                         ))}
+                                    {formik.values.images &&
+                                        !formik.errors.images && croppedImage.length === croppedImageLength &&
+                                        croppedImage.map((imageFile, index) => (
+                                            <React.Fragment key={index}>
+                                                {index === currentCroppedImgeIndex && (
+                                                    <FilterComponent
+                                                        imgUrl={imageFile}
+                                                        setFilteredImg={setFilteredImage}
+                                                        handleNextImage={handleNextFilteredImage}
+                                                    />
+                                                )}
+                                            </React.Fragment>
+                                        ))}
                                     {formik.errors.images && (
                                         <p className="text-red-600 text-xs">
                                             {formik.errors.images}
                                         </p>
                                     )}
+
                                     <div className="icons flex mt-7 text-gray-500 m-2">
                                         <input
                                             type="file"

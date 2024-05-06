@@ -13,6 +13,8 @@ import UsersProfile from "../pages/UsersProfile";
 import FollowRequests from "../pages/FollowRequests";
 import Search from "../pages/Search";
 import SavedPost from "../pages/SavedPost";
+import ProtectedRoutes from './protectedRoutes/ProtectedROutes'
+import Chat from "../pages/Chat";
 
 const appRouter = createBrowserRouter([
     {
@@ -44,6 +46,14 @@ const appRouter = createBrowserRouter([
                 element: <SavedPost />
             },
         ]
+    },
+    {
+        path: '/chat',
+        element: (
+            <ProtectedRoutes>
+                <Chat />
+            </ProtectedRoutes>
+        ),
     },
     {
         path: "/login",

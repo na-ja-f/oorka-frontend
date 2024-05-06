@@ -31,7 +31,6 @@ function HomePage() {
     getPosts({ userId: userId })
       .then((response) => {
         const postData = response.data
-        console.log("this is ",postData);
         setPosts(postData)
       })
       .catch((error) => {

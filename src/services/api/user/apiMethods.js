@@ -1,5 +1,5 @@
 import { apiCall } from "./apiCalls"
-import { userUrls, postUrls, connectionUrls } from "../endPoints"
+import { userUrls, postUrls, connectionUrls, chatUrl } from "../endPoints"
 
 // ! user register
 // ? POST
@@ -550,3 +550,244 @@ export const getSavedPost = (userId) => {
     }
   });
 }
+
+// ! add new conversation 
+// ? POST 
+export const addConversation = (conversationData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrl.addConversation, conversationData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+
+// ! get user conversations 
+// ? GET 
+export const getUserConversations = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrl.getUserConversation}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! add new message 
+// ? POST 
+export const addMessage = (formData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrl.addMessage, formData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get user messages
+// ? GET 
+export const getUserMessages = (conversationId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrl.getMessages}/${conversationId}`;
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get cht eligible users 
+// ? POST 
+export const getChatEligibleUsers = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrl.getEligibleUsers, userId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! set messages read
+// ? PATCH 
+export const setMessageRead = (messageData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("patch", chatUrl.setMessageRead, messageData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get unread messages
+// ? POST 
+export const getUnreadMessages = (messageData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrl.getUnreadMessages, messageData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! add a group
+// ? POST 
+export const addChatGroup = (conversationData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrl.addChatGroup, conversationData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+
+// ! get user groups 
+// ? GET 
+export const getUserGroups = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrl.getUserGroups}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get last messages 
+// ? GET 
+export const getLastMessages = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", chatUrl.lastMessages, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! add  group message
+// ? POST 
+export const addGroupMessage = (formData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrl.addGroupMessage, formData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get last group messages 
+// ? GET 
+export const getGroupMessages = (groupId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrl.getGroupMessages}/${groupId}`;
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get last group messages 
+// ? GET 
+export const getLastGroupMessages = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", chatUrl.lastGroupMessages, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+

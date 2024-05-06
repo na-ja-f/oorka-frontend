@@ -5,6 +5,7 @@ import Followers from './FollowersList'
 import Following from './FollowingList'
 import { toast } from "sonner";
 import { unFollowUser, followUser, getUserConnections, rejectFollowRequest } from "../services/api/user/apiMethods";
+import { Link } from "react-router-dom";
 
 
 function UserDetails({ user, connections, isConnected }) {
@@ -122,7 +123,10 @@ function UserDetails({ user, connections, isConnected }) {
                                 </span>
                             )}
 
-                            <span className="text-blue-500">Message</span>
+                            <Link to={`/chat?userId=${user._id}`} className="text-purple-500">
+                                Message
+                            </Link>
+
                         </div>
                     )}
                     <div className="flex gap-6 mt-5">
@@ -141,22 +145,22 @@ function UserDetails({ user, connections, isConnected }) {
                     </div>
                 </div>
             </div>
-                    {isFollowersModal && (
-                        <Followers 
-                        followers={followers}
-                        followingUsers={following}
-                        setFollowingUsers={setFollowing}
-                        onClose={handleFollowersModal}
-                        />
-                    )}
-                    {isFollowingModal && (
-                        <Following 
-                        followingUsers={following}
-                        setFollowingUsers={setFollowing}
-                        onClose={handleFollowingModal}
-                        currentUser={user._id}
-                        />
-                    )}
+            {isFollowersModal && (
+                <Followers
+                    followers={followers}
+                    followingUsers={following}
+                    setFollowingUsers={setFollowing}
+                    onClose={handleFollowersModal}
+                />
+            )}
+            {isFollowingModal && (
+                <Following
+                    followingUsers={following}
+                    setFollowingUsers={setFollowing}
+                    onClose={handleFollowingModal}
+                    currentUser={user._id}
+                />
+            )}
         </div>
     )
 }

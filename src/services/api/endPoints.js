@@ -42,3 +42,19 @@ export const connectionUrls = {
     rejectRequest: "/connection/reject-request",
     requestedUsers: "/connection/get-requested-users",
 }
+
+export const chatUrl = {
+    addConversation: '/chat/add-conversation',
+    getUserConversation: '/chat/get-conversations',
+    addMessage: "/chat/add-message",
+    getMessages: "/chat/get-messages",
+    getEligibleUsers: "/chat/chat-eligible-users",
+    addGroupMessage: "/chat/add-group-message",
+    getGroupMessages: "/chat/get-group-messages",
+    getUserGroups: "/chat/get-groups",
+    lastMessages: "/chat/get-last-messages",
+    lastGroupMessages: "/chat/last-group-messages",
+    setMessageRead: "/chat/set-message-read",
+    getUnreadMessages: '/chat/get-unread-messages',
+    addChatGroup: "/chat/add-chat-group",
+}

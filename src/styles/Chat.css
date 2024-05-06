@@ -1,0 +1,31 @@
+.animate-shiver {
+  animation: shiver 0.4s ease-in-out infinite;
+}
+
+@keyframes shiver {
+  0% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(-2deg);
+  }
+}
+
+em-emoji-picker {
+  position: fixed;
+  bottom: 70px;
+  right: 500px;
+  background-color: white;
+}
+em-emoji-picker section {
+  background-color: white;
+}
+
+.audio-recorder {
+  background: none !important;
+  box-shadow: none !important;
+  margin-right: 10px !important;
+}

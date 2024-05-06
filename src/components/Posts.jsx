@@ -43,7 +43,6 @@ function Posts({ post }) {
     const images = post.imageUrl
 
     useEffect(() => {
-        console.log(user.savedPost);
         const postId = post._id
         getCommentsCount(postId)
             .then((response) => {
