@@ -55,3 +55,60 @@ export const userBlock = (userId) => {
     }
   });
 };
+
+// ! report list
+// ? GET
+export const adminReportList = (page, limit) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const queryParams = `?page=${page}&limit=${limit}`;
+      adminApiCalls("get", adminUrl.getReports + queryParams, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// ! user blocking
+// ? POST
+export const adminPostBlock = (postId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      adminApiCalls("put", adminUrl.postBlock, postId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+
+// ! post list
+// ? GET
+export const adminPostList = (page, limit) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const queryParams = `?page=${page}&limit=${limit}`;
+      adminApiCalls("get", adminUrl.postList + queryParams, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

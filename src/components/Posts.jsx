@@ -20,6 +20,8 @@ import {
     X,
 } from "lucide-react";
 import ViewPost from './ViewPost'
+import ReportModal from "./ReportModal";
+
 
 
 function Posts({ post }) {
@@ -39,6 +41,7 @@ function Posts({ post }) {
     const [showCommentModal, setShowCommentModal] = useState(false)
     const [commentsCount, setCommentsCount] = useState(0)
     const [isSavedByUser, setIsSavedByUser] = useState(user?.savedPost.includes(post._id))
+    const [reportModal, setReportModal] = useState(false)
 
     const images = post.imageUrl
 
@@ -116,6 +119,15 @@ function Posts({ post }) {
         setShowLikedUserPopup(!showLikedUserPopup)
     }
 
+    const openReportModal = () => {
+        setReportModal(true);
+        toggleDropdown();
+    };
+
+    const closeReportModal = () => {
+        setReportModal(false);
+    };
+
     const handleSave = (postId, userId) => {
         try {
             savePost({ postId, userId })
@@ -169,6 +181,14 @@ function Posts({ post }) {
                                                     Delete
                                                 </button>
                                             </>
+                                        )}
+                                        {user._id !== post.userId._id && (
+                                            <button
+                                                className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-40"
+                                                onClick={() => openReportModal()}
+                                            >
+                                                Report
+                                            </button>
                                         )}
                                     </div>
                                 )}
@@ -272,6 +292,14 @@ function Posts({ post }) {
                         </div>
                     </div>
                 </div>
+            )}
+            {reportModal && (
+                <ReportModal
+                    userId={userId}
+                    postId={post._id}
+                    openReportModal={openReportModal}
+                    closeReportModal={closeReportModal}
+                />
             )}
         </>
     )

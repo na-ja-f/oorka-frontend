@@ -791,3 +791,20 @@ export const getLastGroupMessages = (userId) => {
   });
 }
 
+// ! report a post
+// ? POST 
+export const reportPost = (reportData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.reportPost, reportData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}

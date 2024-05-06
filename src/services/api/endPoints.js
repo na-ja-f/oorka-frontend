@@ -25,13 +25,18 @@ export const postUrls = {
     replyComment: '/post/reply-comment',
     deleteComment: '/post/delete-comment',
     savePost: 'post/save-post',
-    getSavedPost: 'post/saved-post'
+    getSavedPost: 'post/saved-post',
+    reportPost: "/post/report-post",
 }
 
 export const adminUrl = {
     login: "/admin/login",
     userList: "/admin/get-users",
     userBlock: "/admin/user-block",
+    postBlock: "/admin/post-block",
+    getReports: "/admin/get-reports",
+    postList: "/admin/get-posts",
+
 }
 
 export const connectionUrls = {

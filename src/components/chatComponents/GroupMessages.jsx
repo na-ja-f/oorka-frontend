@@ -139,7 +139,7 @@ function GroupMessages({ messages, setMessages, user, currentChat, socket }) {
                 </button>
                 <button
                     type="button"
-                    className="flex self-center hidden p-2 ml-2 text-gray-500 rounded-full md:block focus:outline-none hover:text-gray-600 hover:bg-gray-300"
+                    className=" self-center hidden p-2 ml-2 text-gray-500 rounded-full md:block focus:outline-none hover:text-gray-600 hover:bg-gray-300"
                 >
                     <svg
                         className="w-6 h-6 text-gray-600 fill-current"

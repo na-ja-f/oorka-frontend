@@ -79,7 +79,7 @@ function AddPost({ setNewPost, setShowModal }) {
             console.log("hello");
             setIsLoading(true)
             const { description } = formik.values
-            const imageUrls = filteredImage.map((filteredImg => filteredImg.url))
+            const imageUrls = []
             for (const image of formik.values.images) {
                 const response = await fetch(image)
                 const blob = await response.blob();
@@ -191,7 +191,7 @@ function AddPost({ setNewPost, setShowModal }) {
                                                 )}
                                             </React.Fragment>
                                         ))}
-                                    {formik.values.images &&
+                                    {/* {formik.values.images &&
                                         !formik.errors.images && croppedImage.length === croppedImageLength &&
                                         croppedImage.map((imageFile, index) => (
                                             <React.Fragment key={index}>
@@ -203,7 +203,7 @@ function AddPost({ setNewPost, setShowModal }) {
                                                     />
                                                 )}
                                             </React.Fragment>
-                                        ))}
+                                        ))} */}
                                     {formik.errors.images && (
                                         <p className="text-red-600 text-xs">
                                             {formik.errors.images}
