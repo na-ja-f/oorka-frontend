@@ -10,6 +10,11 @@ export const userUrls = {
     getUserDetails: "/user-details",
     editProfile: "/edit-profile",
     searchUsers: "/search-users",
+    checkout: "/checkout-user",
+    validate: "/validate-payment",
+    allTransactions: "/get-transactions",
+    getHashtags: "/get-hashtags",
+    userSuggestions: "/user-suggestions",
 }
 
 export const postUrls = {
@@ -36,7 +41,13 @@ export const adminUrl = {
     postBlock: "/admin/post-block",
     getReports: "/admin/get-reports",
     postList: "/admin/get-posts",
-
+    getTransactions: '/admin/transactions',
+    hashtagList: "/admin/hashtags",
+    addHashtag: "/admin/add-hashtag",
+    blockHashtag: "/admin/block-hashtag",
+    editHashtag: "/admin/edit-hashtag",
+    chartData: '/admin/chart-data',
+    dashboardStats: '/admin/dashboard-stats',
 }
 
 export const connectionUrls = {
@@ -63,3 +74,10 @@ export const chatUrl = {
     getUnreadMessages: '/chat/get-unread-messages',
     addChatGroup: "/chat/add-chat-group",
 }
+
+export const storyUrl = {
+    addStory: "/story/add-story",
+    getStories: "/story/get-stories",
+    readStory: '/story/read-story',
+    getUserStory: '/story/get-user-story'
+};

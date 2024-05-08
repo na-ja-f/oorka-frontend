@@ -113,6 +113,36 @@ function GroupMessages({ messages, setMessages, user, currentChat, socket }) {
         }
     };
 
+    function randomID(len) {
+        let result = "";
+        if (result) return result;
+        const chars =
+            "12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP",
+            maxPos = chars.length;
+        len = len || 5;
+        for (let i = 0; i < len; i++) {
+            result += chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return result;
+    }
+
+    const handleGroupVideoCall = () => {
+        const roomId = randomID(10);
+        const groupId = currentChat?._id;
+        console.log(groupId + "recieverId");
+        const emitData = {
+            groupId,
+            groupName: currentChat.name,
+            groupProfile: currentChat.profile,
+            roomId: roomId,
+        };
+        console.log(emitData);
+
+        socket.current.emit("GroupVideoCallRequest", emitData);
+
+        navigate(`/group-video-call/${roomId}/${user._id}`);
+    };
+
     return (
         <div className="relative flex flex-col flex-1">
             <div className="z-20 flex flex-grow-0 flex-shrink-0 w-full pr-3 bg-white border-b">
@@ -129,7 +159,7 @@ function GroupMessages({ messages, setMessages, user, currentChat, socket }) {
                 </div>
 
                 <button
-                    onClick=''
+                    onClick={handleGroupVideoCall}
                     className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300"
                 >
                     <Video />

@@ -112,3 +112,132 @@ export const adminPostList = (page, limit) => {
     }
   });
 };
+
+
+// ! transaction list
+// ? GET
+export const adminTransactionList = (page, limit) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const queryParams = `?page=${page}&limit=${limit}`;
+      adminApiCalls("get", adminUrl.getTransactions + queryParams, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// ! add hashtag
+// ? POST
+export const addHashtag = (hashtag) => {
+  return new Promise((resolve, reject) => {
+    try {
+      adminApiCalls("post", adminUrl.addHashtag, hashtag)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// ! get hashtag list
+// ? GET
+export const getHashtags = (page, limit) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const queryParams = `?page=${page}&limit=${limit}`;
+      adminApiCalls("get", adminUrl.hashtagList + queryParams, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// ! add hashtag
+// ? put
+export const BlockHashtag = (hashtagId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      adminApiCalls("put", adminUrl.blockHashtag, hashtagId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// ! edit hashtag
+// ? PATCH
+export const editHashtag = (hashtagData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      adminApiCalls("patch", adminUrl.editHashtag, hashtagData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// ! edit hashtag
+// ? PATCH
+export const chartData = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      adminApiCalls("get", adminUrl.chartData, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// ! edit hashtag
+// ? PATCH
+export const getDashboardStats = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      adminApiCalls("get", adminUrl.dashboardStats, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

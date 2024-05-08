@@ -208,6 +208,9 @@ function Posts({ post }) {
                             <p className="text-black text-md">
                                 <span className="font-bold mr-4">{post?.userId?.name}</span> "{post.description}"
                             </p>
+                            <a href="" className="text-blue-600">
+                                {post.hashtags}
+                            </a>{" "}
                             <p className="text-gray-500 text-sm">
                                 - {formatDistanceToNow(
                                     new Date(post.date),

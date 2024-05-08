@@ -149,6 +149,36 @@ function Messages({
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    function randomID(len) {
+        let result = "";
+        if (result) return result;
+        const chars =
+            "12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP",
+            maxPos = chars.length;
+        len = len || 5;
+        for (let i = 0; i < len; i++) {
+            result += chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return result;
+    }
+
+    const handleVideoCall = () => {
+        const roomId = randomID(10);
+        const recieverId = friend?._id;
+        console.log(recieverId + "recieverId");
+        const emitData = {
+            senderId: user._id,
+            senderName: user.name,
+            senderProfile: user.profileImg,
+            recieverId,
+            roomId: roomId,
+        };
+
+        socket.current.emit("videoCallRequest", emitData);
+
+        navigate(`/video-call/${roomId}/${user._id}`);
+    };
+
 
 
     return (
@@ -171,7 +201,7 @@ function Messages({
                     )}
                 </div>
                 <button
-                    onClick=""
+                    onClick={handleVideoCall}
                     className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300"
                 >
                     <Video />

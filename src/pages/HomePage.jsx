@@ -7,6 +7,7 @@ import HomePageShimmer from '../components/shimmerUI/HomePageShimmer';
 import { getPosts } from '../services/api/user/apiMethods';
 import { toast } from 'sonner';
 import Posts from '../components/Posts';
+import UserSuggestionBar from '../components/UserSuggestionBar';
 
 
 function HomePage() {
@@ -70,11 +71,10 @@ function HomePage() {
               <Posts key={post._id} post={post} />
             ))}
           </div>
-        )
-        }
-
+        )}
         {showModal && <AddPost setNewPost={setPosts} setShowModal={setShowModal} />}
       </div>
+      <UserSuggestionBar />
     </>
   )
 }

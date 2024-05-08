@@ -1,5 +1,5 @@
 import { apiCall } from "./apiCalls"
-import { userUrls, postUrls, connectionUrls, chatUrl } from "../endPoints"
+import { userUrls, postUrls, connectionUrls, chatUrl, storyUrl } from "../endPoints"
 
 // ! user register
 // ? POST
@@ -797,6 +797,171 @@ export const reportPost = (reportData) => {
   return new Promise((resolve, reject) => {
     try {
       apiCall("post", postUrls.reportPost, reportData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get transaction details
+// ? POST 
+export const getAllTransactions = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.allTransactions, userId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! initial checkout
+// ? POST 
+export const initialCheckout = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.checkout, userId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! validate checkout
+// ? POST 
+export const validatePayment = (paymentData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.validate, paymentData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! add Story
+// ? POST 
+export const addStory = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", storyUrl.addStory, postData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get Stories
+// ? GET 
+export const getStories = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${storyUrl.getStories}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get Stories
+// ? GET 
+export const getUserStory = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${storyUrl.getUserStory}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get Stories
+// ? POST 
+export const readStory = (storyData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("patch", storyUrl.readStory, storyData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get hashtags
+// ? GET 
+export const getAllHashtags = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", userUrls.getHashtags, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get user suggestions
+// ? GET 
+export const getUserSuggestions = ({userId, searchTerm}) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const requestData = searchTerm?.length!==0 ? { userId, searchTerm } : { userId };
+      apiCall("post", userUrls.userSuggestions, requestData)
         .then((response) => {
           resolve(response);
         })

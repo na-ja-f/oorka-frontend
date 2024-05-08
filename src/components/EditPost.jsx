@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { toast } from "sonner";
 import * as Yup from "yup";
-import { editPost } from "../services/api/user/apiMethods";
+import { editPost, getAllHashtags } from "../services/api/user/apiMethods";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../redux/reducers/authSlice";
 import Select from "react-select"
@@ -15,6 +15,32 @@ function EditPost({ post, onCancelEdit }) {
 
     const [hideLikes, setHideLikes] = useState(post.hideLikes);
     const [hideComment, setHideComment] = useState(post.hideComment);
+    const [hashtags, setHashtags] = useState([]);
+    const [selectedHashtags, setSelectedHashtags] = useState([]);
+
+    useEffect(() => {
+        try {
+            getAllHashtags().then((response) => {
+                setHashtags(response.data.hashtags);
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }, []);
+
+    useEffect(() => {
+        const seletedTags = post.hashtags.map((tag) => ({
+            value: tag,
+            label: tag,
+        }));
+
+        setSelectedHashtags(seletedTags);
+    }, [post.hashtags]);
+
+    const selectOptions = hashtags.map((tag) => ({
+        value: tag.hashtag,
+        label: tag.hashtag,
+    }));
 
     const formik = useFormik({
         initialValues: {
@@ -30,6 +56,7 @@ function EditPost({ post, onCancelEdit }) {
                     description,
                     hideComment,
                     hideLikes,
+                    hashtags: selectedHashtags,
                 }).then((response) => {
                     const postData = response.data;
                     dispatch(setPosts({ posts: postData.posts }))
@@ -83,6 +110,18 @@ function EditPost({ post, onCancelEdit }) {
                                         {formik.errors.description}
                                     </p>
                                 )}
+                                <p className="font-semibold">Hashtags</p>
+                                <Select
+                                    options={selectOptions}
+                                    isMulti
+                                    value={selectedHashtags}
+                                    onChange={(selectedOption) => {
+                                        console.log(selectedOption)
+
+                                        setSelectedHashtags(selectedOption)
+                                    }
+                                    }
+                                />
                             </div>
                         </div>
                         <div className="icons flex text-gray-500 m-2">

@@ -71,7 +71,7 @@ function Profile() {
                     <div className="gap-4">
                         <img className=" h-36 rounded-full border-2 border-myViolet" src={user.profileImg} alt="profile" />
                         <div className="flex items-top ml-3 justify-center gap-2">
-                            <p className="font-medium text-lg mt-2">{user.username}</p>
+                            <p className="font-medium text-lg mt-2">{user.name}</p>
                             {user?.isVerified && (
                                 <svg
                                     viewBox="0 0 22 22"
@@ -115,7 +115,7 @@ function Profile() {
                             </Tooltip>
                             <p className="text-sm text-gray-500">Edit Profile</p>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 cursor-pointer" onClick={() => navigate("/premium/plans")}>
                             <Tooltip content="Get Verified" style="light">
                                 <BadgeDollarSign
                                     className=" cursor-pointer"

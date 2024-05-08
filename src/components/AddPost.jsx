@@ -6,10 +6,12 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { Spinner } from "flowbite-react";
-import { addPost } from "../services/api/user/apiMethods";
+import { addPost, getAllHashtags } from "../services/api/user/apiMethods";
+import { addHashtag } from '../services/api/admin/apiMethods'
 import CropImage from "./CropImg";
 import BouncingBall from './BouncingBall'
 import FilterComponent from "./FilterComponent";
+import Select from 'react-select'
 
 
 function AddPost({ setNewPost, setShowModal }) {
@@ -22,10 +24,13 @@ function AddPost({ setNewPost, setShowModal }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [hideLikes, setHideLikes] = useState(false);
     const [hideComment, setHideComment] = useState(false);
-
     const [filteredImage, setFilteredImage] = useState([])
     const [currentCroppedImgeIndex, setCurrentCroppedImageIndex] = useState(0)
-    const [ croppedImageLength, setCroppedImageLength] = useState(0);
+    const [croppedImageLength, setCroppedImageLength] = useState(0);
+    const [hashtags, setHashtags] = useState([]);
+    const [hashtagSuggestions, setHashtagSuggestions] = useState([]);
+    const [selectedHashtag, setSelectedHashtag] = useState([]);
+
 
     const fileInputRef = useRef(null)
 
@@ -34,9 +39,21 @@ function AddPost({ setNewPost, setShowModal }) {
         setHideComment(false)
         setCroppedImage([])
         setCurrentImageIndex(0)
+        setSelectedHashtag([]);
         formik.values.images = ([])
         formik.values.description = ''
+        formik.values.hashtag = "";
     }
+
+    useEffect(() => {
+        try {
+            getAllHashtags().then((response) => {
+                setHashtags(response.data.hashtags);
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }, []);
 
     const handleHideLikesToggle = () => {
         setHideLikes(!hideLikes)
@@ -50,6 +67,12 @@ function AddPost({ setNewPost, setShowModal }) {
         fileInputRef.current?.setAttribute("accept", "image/*")
         fileInputRef.current?.click();
     }
+
+    // Options for react-select
+    const selectOptions = hashtags.map((tag) => ({
+        value: tag.hashtag,
+        label: tag.hashtag,
+    }));
 
     const handleFileChange = (e) => {
         const files = e.target.files
@@ -70,7 +93,8 @@ function AddPost({ setNewPost, setShowModal }) {
     const formik = useFormik({
         initialValues: {
             images: [],
-            description: ""
+            description: "",
+            hashtag: "",
         },
         validationSchema: Yup.object({
             images: Yup.array().min(1, "At least one image required")
@@ -107,6 +131,7 @@ function AddPost({ setNewPost, setShowModal }) {
                 description,
                 hideLikes,
                 hideComment,
+                hashtag: selectedHashtag,
             })
                 .then((response) => {
                     const data = response.data
@@ -131,9 +156,15 @@ function AddPost({ setNewPost, setShowModal }) {
     const handleCancelClick = () => {
         formik.values.images = []
         setCroppedImage([])
+        setSelectedHashtag([]);
         resetState()
         setShowModal(false)
     }
+
+    const handleHashtagSelect = (hashtag) => {
+        formik.setFieldValue("hashtag", hashtag);
+        setHashtagSuggestions([]);
+    };
 
     const handleNextImage = () => {
         setCurrentImageIndex((prevIndex) => prevIndex + 1)
@@ -142,6 +173,41 @@ function AddPost({ setNewPost, setShowModal }) {
     const handleNextFilteredImage = () => {
         setCurrentCroppedImageIndex((prevIndex) => prevIndex + 1)
     }
+
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            addHashtags();
+        }
+    };
+
+    const addHashtags = async () => {
+        console.log('nee ethada');
+        const tag = formik.values.hashtag;
+        if (tag.trim() === "") {
+            toast.error("Provide a Hashtag");
+            return;
+        }
+        if (!tag.startsWith("#")) {
+            toast.error("The hashtag should start with a '#' ");
+            return;
+        }
+        try {
+            await addHashtag({ hashtag: tag })
+                .then((response) => {
+                    const addedHashtag = { value: tag, label: tag }
+                    setSelectedHashtag(addedHashtag);
+
+                    formik.values.hashtag = "";
+                    toast.info("Hashtag Added");
+                })
+                .catch((error) => {
+                    toast.error(error.message);
+                });
+        } catch (error) {
+            console.log(error.message);
+            toast.error("Failed to add hashtag");
+        }
+    };
 
     return (
         <div className=" ms-96 w-96 shadow-2xl ">
@@ -263,6 +329,47 @@ function AddPost({ setNewPost, setShowModal }) {
                                                 {formik.errors.description}
                                             </p>
                                         )}
+                                    <p className=" font-medium">Hashtag</p>
+                                    <input
+                                        type="text"
+                                        placeholder="Add hashtags"
+                                        className="rounded-lg shadow-lg p-2 py-3 mb-3 outline-none text-xs font-normal"
+                                        value={formik.values.hashtag}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        name="hashtag"
+                                        onKeyPress={handleKeyPress}
+                                    />
+                                    <Select
+                                        options={selectOptions}
+                                        value={selectedHashtag} // Set selected value
+                                        onChange={(selectedOption) => {
+                                            console.log(selectedOption);
+
+                                            setSelectedHashtag(selectedOption);
+                                        }}
+                                        isMulti
+                                    />
+                                    <div className="">
+                                        {hashtagSuggestions.length > 0 && (
+                                            <div className="absolute flex bg-white w-full mt-1 border border-gray-300 rounded-lg shadow-md">
+                                                {hashtagSuggestions.map((tag) => (
+                                                    <div
+                                                        key={tag._id}
+                                                        className="cursor-pointer flex px-3 py-2 hover:bg-gray-100"
+                                                        onClick={() => handleHashtagSelect(tag.hashtag)}
+                                                    >
+                                                        {tag.hashtag}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {formik.touched.hashtag && formik.errors.hashtag && (
+                                            <p className="text-red-600 text-xs">
+                                                {formik.errors.hashtag}
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <div className="icons flex text-gray-500 m-2">

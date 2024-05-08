@@ -16,7 +16,8 @@ import ChatUsers from '../components/chatComponents/ChatUsers';
 import Messages from "../components/chatComponents/Messages";
 import NochatScreen from '../components/chatComponents/NoChatScreen'
 import GroupMessages from "../components/chatComponents/GroupMessages";
-
+import VideoCallModal from '../components/chatComponents/VideoCallModal';
+import GroupVideoCallModal from '../components/chatComponents/GroupVideoCallModal';
 
 
 
@@ -40,10 +41,10 @@ function Chat() {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [userGroups, setUserGroups] = useState([]);
     const [isGroup, setIsGroup] = useState(false);
-    // const [joinVideoCall, setJoinVideoCall] = useState(false);
-    // const [joinGroupVideoCall, setJoinGroupVideoCall] = useState(false);
-    // const [videoCallJoinRoomId, setVideoCallJoinRoomId] = useState('');
-    // const [callRequestedUser, setCallRequestedUser] = useState({ name: '', profile: '' })
+    const [joinVideoCall, setJoinVideoCall] = useState(false);
+    const [joinGroupVideoCall, setJoinGroupVideoCall] = useState(false);
+    const [videoCallJoinRoomId, setVideoCallJoinRoomId] = useState('');
+    const [callRequestedUser, setCallRequestedUser] = useState({ name: '', profile: '' })
     const socket = useRef();
 
     useEffect(() => {
@@ -127,19 +128,19 @@ function Chat() {
         });
     }, [user]);
 
-    // useEffect(() => {
-    //     socket.current.on("videoCallResponse", (data) => {
-    //         setVideoCallJoinRoomId(data.roomId);
-    //         setCallRequestedUser({ name: data.senderName, profile: data.senderProfile });
-    //         setJoinVideoCall(true);
-    //     })
+    useEffect(() => {
+        socket.current.on("videoCallResponse", (data) => {
+            setVideoCallJoinRoomId(data.roomId);
+            setCallRequestedUser({ name: data.senderName, profile: data.senderProfile });
+            setJoinVideoCall(true);
+        })
 
-    //     socket.current.on("GroupVideoCallResponse", (data) => {
-    //         setVideoCallJoinRoomId(data.roomId)
-    //         setCallRequestedUser({ name: data.groupName, profile: data.groupProfile });
-    //         setJoinGroupVideoCall(true)
-    //     })
-    // }, [socket]);
+        socket.current.on("GroupVideoCallResponse", (data) => {
+            setVideoCallJoinRoomId(data.roomId)
+            setCallRequestedUser({ name: data.groupName, profile: data.groupProfile });
+            setJoinGroupVideoCall(true)
+        })
+    }, [socket]);
 
     const getLastMessage = () => {
         getLastGroupMessages().then((response) => {
@@ -167,6 +168,14 @@ function Chat() {
             });
         });
     };
+
+    const handleJoinVidoCallRoom = () => {
+        navigate(`/video-call/${videoCallJoinRoomId}/${userId}`);
+    }
+
+    const handleJoinGroupVidoCallRoom = () => {
+        navigate(`/group-video-call/${videoCallJoinRoomId}/${userId}`);
+    }
 
 
     return (
@@ -209,6 +218,31 @@ function Chat() {
                     userGroups={userGroups}
                 />
             )}
+            {joinVideoCall &&
+                <VideoCallModal
+                    show={joinVideoCall}
+                    onHide={() => setJoinVideoCall(false)}
+                    onAccept={handleJoinVidoCallRoom}
+                    onReject={() => {
+                        setVideoCallJoinRoomId('');
+                        setJoinVideoCall(false);
+                    }}
+                    caller={callRequestedUser}
+                />
+            }
+            {joinGroupVideoCall &&
+                <GroupVideoCallModal
+                    show={joinGroupVideoCall}
+                    onHide={() => setJoinGroupVideoCall(false)}
+                    onAccept={handleJoinGroupVidoCallRoom}
+                    onReject={() => {
+                        setVideoCallJoinRoomId('');
+                        setJoinGroupVideoCall(false);
+                    }}
+                    caller={callRequestedUser}
+                />
+
+            }
         </div>
     )
 }

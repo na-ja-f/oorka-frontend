@@ -15,11 +15,19 @@ import Search from "../pages/Search";
 import SavedPost from "../pages/SavedPost";
 import ProtectedRoutes from './protectedRoutes/ProtectedROutes'
 import Chat from "../pages/Chat";
+import Error from "../components/Error";
+import ProtectedVideoCall from '../components/chatComponents/ProtectVideoCall'
+import ProtectedGroupVideoCall from '../components/chatComponents/ProtectedGroupVideoCall'
+import PremiumPage from "../pages/PremiumPage";
+import Premium from "../components/Premium";
+import PaymentSuccess from "../components/PaymentSuccess";
+import PaymentFailed from "../components/PaymentFailed";
 
 const appRouter = createBrowserRouter([
     {
         path: "/",
         element: <App />,
+        errorElement: <Error message="Something Went Wrong" />,
         children: [
             {
                 path: '/',
@@ -54,6 +62,33 @@ const appRouter = createBrowserRouter([
                 <Chat />
             </ProtectedRoutes>
         ),
+        errorElement: <Error message="Something Went Wrong" />
+    },
+    {
+        path: "/video-call/:roomId/:userId",
+        element: <ProtectedVideoCall />,
+    },
+    {
+        path: "/group-video-call/:roomId/:userId",
+        element: <ProtectedGroupVideoCall />,
+    },
+    {
+        path: '/premium',
+        element: <PremiumPage />,
+        children: [
+            {
+                path: '/premium/plans',
+                element: <Premium />
+            },
+            {
+                path: '/premium/payment-success',
+                element: <PaymentSuccess />
+            },
+            {
+                path: '/premium/payment-failed',
+                element: <PaymentFailed />
+            },
+        ]
     },
     {
         path: "/login",
