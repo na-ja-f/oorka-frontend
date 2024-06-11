@@ -22,6 +22,7 @@ import PremiumPage from "../pages/PremiumPage";
 import Premium from "../components/Premium";
 import PaymentSuccess from "../components/PaymentSuccess";
 import PaymentFailed from "../components/PaymentFailed";
+import Notifications from "../components/Notifications";
 
 const appRouter = createBrowserRouter([
     {
@@ -52,6 +53,10 @@ const appRouter = createBrowserRouter([
             {
                 path: '/saved-post',
                 element: <SavedPost />
+            },
+            {
+                path: '/notifications',
+                element: <Notifications />
             },
         ]
     },

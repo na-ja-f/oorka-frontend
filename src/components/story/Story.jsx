@@ -23,7 +23,6 @@ function Story() {
         });
         getUserStory(userId).then((response) => {
             setUserStory(response.data)
-            console.log('respon', userStory);
 
         })
     }, []);

@@ -171,9 +171,10 @@ export const addPost = (postData) => {
 
 // ! get  all posts
 // ? get
-export const getPosts = (userId) => {
+export const getPosts = (userId,searchTerm) => {
   return new Promise((resolve, reject) => {
     try {
+      const requestData = searchTerm?.length!==0 ? { userId, searchTerm } : { userId };
       apiCall("post", postUrls.getPosts, userId)
         .then((response) => {
           resolve(response);
@@ -973,3 +974,22 @@ export const getUserSuggestions = ({userId, searchTerm}) => {
     }
   });
 }
+
+// ! get notifications
+// ? GET 
+export const getNotifications = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.getNotifications, userId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+

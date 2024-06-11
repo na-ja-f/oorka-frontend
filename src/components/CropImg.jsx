@@ -1,3 +1,4 @@
+import { openEditor } from 'react-profile'
 import { useState } from "react";
 import Cropper from 'react-easy-crop'
 import UseCropImage from '../helpers/imageCropper'

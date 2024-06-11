@@ -28,7 +28,7 @@ function ProfileEdit({ user, onClose }) {
   const formik = useFormik({
     initialValues: {
       image: user.profileImg,
-      name: user.username,
+      name: user.name,
       phone: user.phone,
       bio: user.bio
     },

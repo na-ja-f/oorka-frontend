@@ -8,7 +8,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useSelector } from "react-redux";
 import { addChatGroup } from "../../services/api/user/apiMethods";
-const animatedComponents = makeAnimated();
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -22,6 +22,8 @@ function AddGroup({
     const selectUser = (state) => state.auth.user;
     const user = useSelector(selectUser);
     const userId = user._id;
+    const animatedComponents = makeAnimated();
+    let navigate = useNavigate()
 
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
@@ -82,12 +84,12 @@ function AddGroup({
                 description,
                 admins,
             }).then((response) => {
-                console.log("hello");
                 const GroupData = response.data;
-                console.log(GroupData);
                 setUserGroups((prev) => [...prev, GroupData]);
                 toast.info("Group Added successfully");
+                navigate('/')
                 resetState();
+                
             });
         } catch (error) {
             console.error("Error updating profile:", error);

@@ -43,7 +43,7 @@ function FollowersList({ followers, followingUsers, setFollowingUsers, onClose }
             .then((response) => {
                 if (response.data.followed) {
                     const followedUser = followers.find((user) => user._id === likedUserId)
-                    setFollowing([...following, followUser])
+                    setFollowing([...following, followedUser])
                     setFollowingUsers([...followingUsers, followedUser])
                 } else {
                     setRequested([...requested, likedUserId])

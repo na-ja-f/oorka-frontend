@@ -198,8 +198,8 @@ function Posts({ post }) {
                             <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
                                 <Carousel pauseOnHover slideInterval={5000} leftControl={<ChevronLeft color="white" />} rightControl={<ChevronRight color="white" />} >
                                     {images &&
-                                        images.map((image) => (
-                                            <img src={image} alt="description" />
+                                        images.map((image,index) => (
+                                            <img key={index} src={image} alt="description" />
                                         ))}
                                 </Carousel>
                             </div>

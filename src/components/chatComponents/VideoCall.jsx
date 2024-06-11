@@ -11,7 +11,7 @@ function VideoCall() {
     const user = useSelector(selectUser);
     const navigate = useNavigate();
     const userId = user._id;
-    const userName = user.username;
+    const userName = user.name;
 
 
     const handleLeaveRoom = () => {
@@ -24,8 +24,8 @@ function VideoCall() {
 
 
         const myMeeting = async () => {
-            const appId = 1258203535;
-            const serverSecret = "4dd9362cf129c4a07be4fd54d9ec7c2f";
+            const appId = 1405362731;
+            const serverSecret = "cb4b6b5f9dd231cb42f4cb002620066c";
             const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
                 appId,
                 serverSecret,

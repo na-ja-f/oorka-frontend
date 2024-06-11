@@ -26,7 +26,7 @@ function UserSuggestionBar() {
                 setLoading(false);
             })
             .catch((error) => {
-                console.log(error.message);
+                console.log(error);
             });
 
 
@@ -37,7 +37,7 @@ function UserSuggestionBar() {
                 setRequested(connectionData.requestSent);
             })
             .catch((error) => {
-                console.log(error.message);
+                console.log(error);
             });
     }, []);
 

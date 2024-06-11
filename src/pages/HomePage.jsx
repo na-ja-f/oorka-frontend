@@ -35,7 +35,7 @@ function HomePage() {
         setPosts(postData)
       })
       .catch((error) => {
-        toast.error(error.message)
+        toast.error(error)
       })
       .finally(() => {
         setLoading(false)
@@ -50,7 +50,7 @@ function HomePage() {
             <Story />
           </div>
           <div>
-            <button onClick={() => setShowModal(true)} class="fixed bottom-8 right-32 mb-8 mr-8 bg-myViolet hover:bg-violet-900 text-white font-bold py-5 px-5 rounded-2xl shadow-xl shadow-gray-600">
+            <button onClick={() => setShowModal(true)} className="fixed bottom-8 right-32 mb-8 mr-8 bg-myViolet hover:bg-violet-900 text-white font-bold py-5 px-5 rounded-2xl shadow-xl shadow-gray-600">
               <ImagePlus size={30} />
             </button>
           </div>

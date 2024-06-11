@@ -54,7 +54,7 @@ function UsersProfile() {
                             <PostShimmer />
                         </div>
                     ) : (
-                        <div className="ms-96 mt-14 grid grid-cols-2 w-11/12 gap-3">
+                        <div className="ms-96 mt-14 grid grid-cols-2  w-11/12 gap-3">
                             {Post.length !== 0 && Post.map((post) => (
                                 <PostGallery key={post._id} post={post} />
                             ))}

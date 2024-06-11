@@ -63,7 +63,7 @@ function Sidebar() {
                                 ? "text-myViolet border-r-2 border-myViolet"
                                 : "text-myText"
                                 }  rounded-lg`}
-                            to={"/"}
+                            to={"/notifications"}
                         >
                             <BellRing />
                             <span className="mx-5 ">Notifications</span>

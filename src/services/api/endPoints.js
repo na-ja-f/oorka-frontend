@@ -15,6 +15,7 @@ export const userUrls = {
     allTransactions: "/get-transactions",
     getHashtags: "/get-hashtags",
     userSuggestions: "/user-suggestions",
+    getNotifications: "/get-notifications",
 }
 
 export const postUrls = {
