@@ -30,20 +30,20 @@ function Notifications() {
     }, []);
 
     return (
-        <div className="">
+        <div className="w-10/12">
             <div className="lg:ms-96 z-40">
-                <div className="border profile-nav flex  items-center justify-start ps-6 bg-white rounded-md lg:mt-5 lg:mx-5">
-                    <p className="text-lg flex items-center p-2 gap-2 text-gray-500">
+                <div className="border profile-nav flex  items-center w-full justify-start ps-6 bg-white rounded-md mt-16 mx-5">
+                    <p className="flex items-center justify-center p-2 gap-2">
                         Notifications <BellRing color="gray" size={20} />
                     </p>
                 </div>
 
-                <div className="home-scroll">
-                    <div className="home-scrollbox">
+                <div className="">
+                    <div className="">
                         {notifications?.map((notification) => (
                             <div
                                 key={notification._id}
-                                className="pl-3 pb-2 bg-white  lg:mx-5 w-12/12 mt-2 rounded-lg"
+                                className="p-3 bg-green-200 mx-5 w-full mt-2 rounded-lg"
                             >
                                 <div
                                     className="flex notifications-section justify-between py-1 ml-2"

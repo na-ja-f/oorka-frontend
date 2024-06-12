@@ -94,8 +94,7 @@ function UserDetails({ user, connections, isConnected }) {
                     <img className=" h-36 w-36 rounded-full" src={user?.profileImg} alt="profilepic" />
                 </div>
                 <div className="flex flex-col mt-4">
-                    <p className="font-semibold text-lg flex justify-center">{user.name}</p>
-                    {user?.isVerified && (<svg
+                    <p className="font-semibold text-lg flex justify-center">{user.name}{user?.isVerified && (<svg
                         viewBox="0 0 22 22"
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6"
@@ -105,7 +104,8 @@ function UserDetails({ user, connections, isConnected }) {
                             fill="#1d9bf0"
                         ></path>
                     </svg>
-                    )}
+                    )}</p>
+
                     <p className="flex justify-center">{user.bio}</p>
                     {user?._id !== userId && (
                         <div className="flex justify-around">

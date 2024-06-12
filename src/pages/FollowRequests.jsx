@@ -3,12 +3,14 @@ import { acceptFollowRequest, getRequestedUsers, rejectFollowRequest } from '../
 import { useSelector } from 'react-redux'
 import { toast } from "sonner";
 import Requests from "../components/Requests";
+import { useNavigate } from "react-router-dom";
 
 function FollowRequests() {
 
     const selectUser = (state) => state.auth.user;
     const user = useSelector(selectUser);
     const userId = user._id
+    const navigate = useNavigate()
 
     const [requests, setRequests] = useState([])
 
@@ -26,6 +28,7 @@ function FollowRequests() {
             .then((response) => {
                 setRequests(response.data.connections)
                 toast.info("request accepted")
+                navigate('/')
             })
     }
 
@@ -34,6 +37,7 @@ function FollowRequests() {
             .then((response) => {
                 setRequests(response.data.connections)
                 toast.info("request rejected")
+                navigate('/')
             })
     }
 

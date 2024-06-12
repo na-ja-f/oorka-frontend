@@ -33,6 +33,7 @@ function UsersProfile() {
             })
         getUserPost(userId)
             .then((response) => {
+                console.log('res', response.data);
                 const postData = response.data;
                 setPost(postData)
             })
@@ -46,7 +47,7 @@ function UsersProfile() {
             {!loading && <UserDetails user={user} connections={connections} isConnected={isConnected} />}
 
             {isConnected && (
-                <div className="flex">
+                <>
                     {loading ? (
                         <div>
                             <PostShimmer />
@@ -54,13 +55,13 @@ function UsersProfile() {
                             <PostShimmer />
                         </div>
                     ) : (
-                        <div className="ms-96 mt-14 grid grid-cols-2  w-11/12 gap-3">
+                        <div className="ms-96 mt-14 grid grid-cols-2 md:grid-cols-3 w-11/12 gap-3">
                             {Post.length !== 0 && Post.map((post) => (
                                 <PostGallery key={post._id} post={post} />
                             ))}
                         </div>
                     )}
-                </div>
+                </>
             )}
         </div>
     )

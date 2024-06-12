@@ -89,7 +89,7 @@ function UserSuggestionBar() {
 
     return (
         <>
-            <div className="fixed shadow-xl right-36 lg:col-span-2 ms-10 h-4/6 w-1/5 p-4 bg-white rounded-lg  mt-5" id="posted">
+            <div className="fixed shadow-xl right-36 lg:col-span-2 ms-10 h-4/6 w-1/5 p-4 bg-white rounded-lg  mt-16 overflow-scroll" id="posted">
                 <h1 className="mb-4 text-gray-600 text-center font-semibold">
                     SUGGESTIONS
                 </h1>
