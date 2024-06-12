@@ -20,8 +20,8 @@ function GroupVideoCall() {
     useEffect(() => {
         if (!containerRef.current) return;
         const myMeeting = async () => {
-            const appId = 1258203535;
-            const serverSecret = "4dd9362cf129c4a07be4fd54d9ec7c2f";
+            const appId = 1405362731;
+            const serverSecret = "cb4b6b5f9dd231cb42f4cb002620066c";
             const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
                 appId,
                 serverSecret,
