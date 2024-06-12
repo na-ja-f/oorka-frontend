@@ -18,7 +18,6 @@ function Signup() {
     const navigate = useNavigate();
 
     const submit = (values) => {
-        console.log("values thomas");
         postRegister(values)
             .then((response) => {
                 const data = response.data
