@@ -91,6 +91,7 @@ function Chat() {
                 });
             });
         })
+
         getGroupMessages();
     }, [])
 
@@ -176,6 +177,7 @@ function Chat() {
     const handleJoinGroupVidoCallRoom = () => {
         navigate(`/group-video-call/${videoCallJoinRoomId}/${userId}`);
     }
+    
 
 
     return (

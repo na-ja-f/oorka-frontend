@@ -5,86 +5,86 @@ import { Button, Modal, Pagination } from "flowbite-react";
 import { adminUsersList, userBlock } from "../../services/api/admin/apiMethods";
 
 function UsersList() {
-    const [users, setUsers] = useState([])
-    const [filteredUsers, setFilteredUsers] = useState([])
-    const [openModal, setOpenModal] = useState(false)
-    const [selectedUserId, setSelectedUserId] = useState("")
-    const [blockAction, setBlockAction] = useState("block")
-    const [currentPage, setCurrentPage] = useState(0)
-    const [totalCount, setTotalCount] = useState(0)
+    const [users, setUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState("");
+    const [blockAction, setBlockAction] = useState("block");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalCount, setTotalCount] = useState(0);
 
-    const onPageChange = (page) =>  setCurrentPage(page)
+    const onPageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     useEffect(() => {
         fetchUsers();
-    }, [currentPage])
+    }, [currentPage]);
 
     const fetchUsers = () => {
         adminUsersList(currentPage)
             .then((response) => {
                 const userData = response.data;
-                setUsers(userData.users)
-                setFilteredUsers(userData.users)
-                const totalUserCount = Math.ceil(userData.totalusers / 6)
-
-                setTotalCount(totalUserCount)
+                setUsers(userData.users);
+                setFilteredUsers(userData.users);
+                const totalUserCount = Math.ceil(userData.totalUsers / 6);
+                setTotalCount(totalUserCount);
             })
             .catch((error) => {
                 console.log(error);
-                toast.error("failed to fetch users")
-            })
-            .finally(() => {
-            })
-    }
+                toast.error("failed to fetch users");
+            });
+    };
 
     const handleUserBlock = (userId, status) => {
         try {
-            setSelectedUserId(userId)
-            setBlockAction(status === "block" ? "unblock" : "block")
-            setOpenModal(true)
+            setSelectedUserId(userId);
+            setBlockAction(status === "block" ? "unblock" : "block");
+            setOpenModal(true);
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.message);
         }
-    }
+    };
 
     const confirmUserBlock = (userId, status) => {
-        setOpenModal(false)
-        const requestData = { userId }
+        setOpenModal(false);
+        const requestData = { userId };
         userBlock(requestData)
             .then((response) => {
-                const data = response.data
-                if (status == "block") {
-                    toast.error(data.message)
+                const data = response.data;
+                if (status === "block") {
+                    toast.error(data.message);
                 } else {
-                    toast.info(data.message)
+                    toast.info(data.message);
                 }
                 setUsers((prevUsers) =>
                     prevUsers.map((user) => {
                         if (user._id === userId) {
-                            return { ...user, isBlocked: !user.isBlocked }
+                            return { ...user, isBlocked: !user.isBlocked };
                         }
-                        return user
+                        return user;
                     })
-                )
+                );
                 setFilteredUsers((prevUsers) =>
                     prevUsers.map((user) => {
                         if (user._id === userId) {
-                            return { ...user, isBlocked: !user.isBlocked }
+                            return { ...user, isBlocked: !user.isBlocked };
                         }
-                        return user
+                        return user;
                     })
-                )
+                );
             })
             .catch((error) => {
-                toast.error(error.message)
-            })
-    }
+                toast.error(error.message);
+            });
+    };
 
     const handleSearch = (searchText) => {
         const filtered = users.filter((user) =>
-            user.name.toLowerCase().includes(searchText.toLowerCase()))
-        setFilteredUsers(filtered)
-    }
+            user.name.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setFilteredUsers(filtered);
+    };
 
     return (
         <div className="w-8/12 mt-16 overflow-hidden rounded-lg border border-gray-200 shadow-md m-5 ml-24">
@@ -103,7 +103,7 @@ function UsersList() {
                     />
                 </div>
             </div>
-            <table className=" w-full border-collapse bg-white text-left text-sm text-gray-500">
+            <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
                 <thead className="bg-gray-50">
                     <tr>
                         <th scope="col" className="px-6 py-4 font-medium text-gray-900">
@@ -171,7 +171,7 @@ function UsersList() {
                                             <button
                                                 type="button"
                                                 onClick={() => handleUserBlock(user._id, "unblock")}
-                                                className=" bg-white text-blue-600 hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
+                                                className="bg-white text-blue-600 hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
                                             >
                                                 <CheckCheck />
                                                 UnBlock
@@ -180,7 +180,7 @@ function UsersList() {
                                             <button
                                                 type="button"
                                                 onClick={() => handleUserBlock(user._id, "block")}
-                                                className=" bg-white gap-2 text-red-600 hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
+                                                className="bg-white gap-2 text-red-600 hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
                                             >
                                                 <LockKeyhole />
                                                 Block
@@ -191,17 +191,16 @@ function UsersList() {
                             </tr>
                         ))}
                 </tbody>
-
-                <div className="flex overflow-x-auto sm:justify-center">
-                    <Pagination
-                        layout="table"
-                        currentPage={currentPage}
-                        totalPages={totalCount} 
-                        onPageChange={onPageChange}
-                        showIcons
-                    />
-                </div>
             </table>
+            <div className="flex overflow-x-auto sm:justify-center p-4">
+                <Pagination
+                    layout="table"
+                    currentPage={currentPage}
+                    totalPages={totalCount}
+                    onPageChange={onPageChange}
+                    showIcons
+                />
+            </div>
             <Modal
                 show={openModal}
                 size="md"
@@ -217,7 +216,7 @@ function UsersList() {
                         <div className="flex justify-center gap-4">
                             <Button
                                 color={blockAction === "block" ? "blue" : "failure"}
-                                onClick={() => confirmUserBlock(selectedUserId, "block")}
+                                onClick={() => confirmUserBlock(selectedUserId, blockAction)}
                             >
                                 {blockAction === "unblock" ? "block" : "unblock"}
                             </Button>
@@ -229,7 +228,7 @@ function UsersList() {
                 </Modal.Body>
             </Modal>
         </div>
-    )
+    );
 }
 
-export default UsersList
+export default UsersList;

@@ -9,6 +9,8 @@ import { addMessage, getUserMessages, setMessageRead } from "../../services/api/
 import SendedChat from "./SendedChat";
 import RecievedChat from "./RecievedChat";
 import VoiceRecorder from "./VoiceRecorder";
+import { formatDistanceToNow } from "date-fns";
+
 
 
 
@@ -31,6 +33,9 @@ function Messages({
     const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
     const [isRecording, setIsRecording] = useState(false)
     const scrollRef = useRef();
+    const typingTimeoutRef = useRef(null);
+    const [isTyping, setIsTyping] = useState(false);
+
 
     const navigate = useNavigate();
 
@@ -179,6 +184,42 @@ function Messages({
         navigate(`/video-call/${roomId}/${user._id}`);
     };
 
+    const handleChange = (e) => {
+        setNewMessage(e.target.value)
+        handleTyping()
+    }
+
+    const handleTyping = () => {
+        socket.current.emit('typing', { senderId: user._id, recieverId: friend?._id });
+
+        if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+        }
+
+        typingTimeoutRef.current = setTimeout(() => {
+            socket.current.emit('stopTyping', { senderId: user._id, recieverId: friend?._id });
+        }, 1000);
+    }
+
+    
+
+    useEffect(() => {
+        let recieverId = friend?._id
+        console.log('Listening for userTyping and userStopTyping events');
+        socket.current.on('userTyping', ({ senderId }) => {
+            
+            if (senderId === recieverId) {
+                setIsTyping(true);
+            }
+        });
+
+        socket.current.on('userStopTyping', ({ senderId }) => {
+            if (senderId === recieverId) {
+                console.log('ttt');
+                setIsTyping(false);
+            }
+        });
+    }, [friend?._id]);
 
 
     return (
@@ -194,9 +235,22 @@ function Messages({
                     <div className="overflow-hidden text-sm font-medium leading-tight text-gray-600 whitespace-no-wrap">
                         {friend?.name}
                     </div>
-                    {isOnline && (
+                    {isOnline && !isTyping &&(
                         <div className="overflow-hidden text-xs text-purple-600  leading-tight  whitespace-no-wrap">
                             Online
+                        </div>
+                    )}
+                    {isOnline && isTyping &&(
+                        <div className="overflow-hidden text-xs text-purple-600  leading-tight  whitespace-no-wrap">
+                            typing...
+                        </div>
+                    )}
+                    {!isOnline && (
+                        <div className="overflow-hidden text-xs text-purple-600  leading-tight  whitespace-no-wrap">
+                            {friend?.lastSeen && formatDistanceToNow(
+                                (friend?.lastSeen),
+                                { addSuffix: true }
+                            )}
                         </div>
                     )}
                 </div>
@@ -359,7 +413,7 @@ function Messages({
                             value={newMessage}
                             className="w-full items-center h-10 pl-10 pr-4  bg-white  text-xs border border-gray-300 rounded-md focus:border-gray-200 focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-purple-600 transition-colors duration-300"
                             placeholder="Type your message..."
-                            onChange={(e) => setNewMessage(e.target.value)}
+                            onChange={handleChange}
                             onKeyPress={handleKeyPress}
                         />
                     </div>
