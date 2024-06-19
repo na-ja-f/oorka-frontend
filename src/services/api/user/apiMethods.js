@@ -171,10 +171,10 @@ export const addPost = (postData) => {
 
 // ! get  all posts
 // ? get
-export const getPosts = (userId,searchTerm) => {
+export const getPosts = (userId, searchTerm) => {
   return new Promise((resolve, reject) => {
     try {
-      const requestData = searchTerm?.length!==0 ? { userId, searchTerm } : { userId };
+      const requestData = searchTerm?.length !== 0 ? { userId, searchTerm } : { userId };
       apiCall("post", postUrls.getPosts, userId)
         .then((response) => {
           resolve(response);
@@ -533,12 +533,49 @@ export const savePost = (postData) => {
   });
 }
 
-// ! get saved post 
-// ? GET 
-export const getSavedPost = (userId) => {
+// ! save post 
+// ? POST 
+export const createCategory = (postData) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = `${postUrls.getSavedPost}/${userId}`
+      apiCall("post", postUrls.createCategory, postData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
+// ! get saved categories 
+// ? GET 
+export const getSavedCategories = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrls.getSavedCategories}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+// ! get saved post 
+// ? GET 
+export const getSavedPost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrls.getSavedPost}/${postData.userId}/${postData.category}`
+      // const url = `${postUrls.getSavedPost}/${userId}`
       apiCall("get", url, null)
         .then((response) => {
           resolve(response);
@@ -774,6 +811,25 @@ export const getGroupMessages = (groupId) => {
   });
 }
 
+// ! get group members 
+// ? GET 
+export const getGroupMembers = (groupId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrl.getMembers}/${groupId}`;
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+}
+
 // ! get last group messages 
 // ? GET 
 export const getLastGroupMessages = (userId) => {
@@ -958,10 +1014,10 @@ export const getAllHashtags = () => {
 
 // ! get user suggestions
 // ? GET 
-export const getUserSuggestions = ({userId, searchTerm}) => {
+export const getUserSuggestions = ({ userId, searchTerm }) => {
   return new Promise((resolve, reject) => {
     try {
-      const requestData = searchTerm?.length!==0 ? { userId, searchTerm } : { userId };
+      const requestData = searchTerm?.length !== 0 ? { userId, searchTerm } : { userId };
       apiCall("post", userUrls.userSuggestions, requestData)
         .then((response) => {
           resolve(response);

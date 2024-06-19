@@ -1,10 +1,24 @@
 import { X } from "lucide-react";
 import { useState, useEffect } from "react";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import { useSelector } from "react-redux";
+import { Smile } from "lucide-react";
+import { addMessage, addConversation } from "../../services/api/user/apiMethods";
+import { toast } from "sonner";
+
+
 
 function ViewStory({ story, onClose }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const numStories = story.stories.length;
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [newMessage, setNewMessage] = useState("");
+
+    const selectUser = (state) => state.auth.user;
+    const user = useSelector(selectUser)
+
 
     const handlePrevClick = () => {
         setCurrentIndex((prevIndex) =>
@@ -48,8 +62,41 @@ function ViewStory({ story, onClose }) {
         }
     }, [currentIndex, numStories, onClose]);
 
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            handleSubmit(null);
+        }
+    };
+
+    const handleSubmit = (file) => {
+        const formData = new FormData();
+        const userId = user._id;
+        const receiver = story.userId._id
+        let messageType = "text";
+
+        addConversation({ senderId: userId, receiverId: receiver })
+            .then((response) => {
+                const userData = response.data;
+                // Add other message details to FormData
+                formData.append("conversationId", userData._id);
+                formData.append("sender", userId);
+                formData.append("text", newMessage);
+                formData.append("messageType", messageType);
+
+
+                addMessage(formData)
+                    .then((response) => {
+                        toast.info("message has been sent");
+                        setNewMessage("");
+                    })
+                    .catch((error) => {
+                        console.error("Error sending message:", error);
+                    });
+            })
+    };
+
     return (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
+        <div onClick={() => setShowEmojiPicker(false)} className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
             <div className="rounded-lg relative">
                 <button
                     className="absolute z-50 top-8 right-2 text-gray-900"
@@ -81,10 +128,10 @@ function ViewStory({ story, onClose }) {
                                     className={`bg-gray-300 h-1 rounded-lg`}
                                     style={{
                                         width: `${currentIndex === index
-                                                ? progress
-                                                : index < currentIndex
-                                                    ? "100%"
-                                                    : "0"
+                                            ? progress
+                                            : index < currentIndex
+                                                ? "100%"
+                                                : "0"
                                             }%`,
                                         marginLeft: `${index !== 0 ? 1 : 0}%`,
                                     }}
@@ -92,13 +139,25 @@ function ViewStory({ story, onClose }) {
                             </div>
                         ))}
                     </div>
+                    {!story.stories[currentIndex]?.isVideo &&
+                        <img
+                            src={story.stories[currentIndex].imageUrl}
+                            alt="Story"
+                            className="rounded-lg"
+                            style={{ width: "400px", height: "550px" }}
+                        />
+                    }
+                    {story.stories[currentIndex]?.isVideo &&
+                        <video
+                            src={story.stories[currentIndex].imageUrl}
+                            alt="Story"
+                            className="rounded-lg bg-black"
+                            style={{ width: "400px", height: "550px" }}
+                            autoPlay
+                            loop
+                        />
+                    }
 
-                    <img
-                        src={story.stories[currentIndex].imageUrl}
-                        alt="Story"
-                        className="rounded-lg"
-                        style={{ width: "400px", height: "550px" }}
-                    />
                     <div className="absolute top-2/4 left-0 transform -translate-y-2/4 w-full flex justify-between">
                         <button
                             onClick={handlePrevClick}
@@ -141,8 +200,48 @@ function ViewStory({ story, onClose }) {
                     </div>
                 </div>
             </div>
+            {story.userId._id !== user._id &&
+                <div className="absolute bottom-20 p-1 rounded-lg items-center bg-transparent" style={{ width: '410px' }}>
+                    <div className="relative w-full max-w-xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="w-full">
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <button
+                                    type="button"
+                                    className="p-1 focus:outline-none focus:shadow-none"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowEmojiPicker(!showEmojiPicker);
+                                    }}
+                                >
+                                    <Smile size={18} />
+                                </button>
+                            </span>
+                            <input
+                                type="text"
+                                value={newMessage}
+                                className="w-full items-center h-12 pl-10 pr-4 text-xs border border-gray-300 rounded-md focus:border-gray-200 focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-purple-600 transition-colors duration-300"
+                                placeholder="Type your message..."
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
+                        </div>
+                        {showEmojiPicker && (
+                            <div className="absolute bottom-12 left-0">
+                                <Picker
+                                    data={data}
+                                    onEmojiSelect={(emoji) => {
+                                        setNewMessage((prevMessage) => prevMessage + emoji.native);
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            }
         </div>
     )
+
+
 }
 
 export default ViewStory

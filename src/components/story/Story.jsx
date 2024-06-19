@@ -23,7 +23,6 @@ function Story() {
         });
         getUserStory(userId).then((response) => {
             setUserStory(response.data)
-
         })
     }, []);
 
@@ -82,7 +81,7 @@ function Story() {
 
             </ul>
 
-            {viewStory && <ViewStory story={viewStory} onClose={handleCloseViewStory} />}
+            {viewStory && <ViewStory story={viewStory} onClose={handleCloseViewStory} key={viewStory.stories} />}
             {addStoryModal && <AddStoryModal setAddStoryModal={setAddStoryModal} setUserStory={setUserStory} />}
         </div>
     )

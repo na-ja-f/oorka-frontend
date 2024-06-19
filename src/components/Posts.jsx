@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { loginSuccess, setPosts } from "../redux/reducers/authSlice";
 import { Modal, Button } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "flowbite-react";
 import { formatDistanceToNow } from "date-fns";
 import { deletePost, likePost, getCommentsCount, savePost } from "../services/api/user/apiMethods";
@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import ViewPost from './ViewPost'
 import ReportModal from "./ReportModal";
+import { BASE_URL } from '../constants/baseURL'
+import { io } from "socket.io-client";
 
 
 
@@ -28,6 +30,7 @@ function Posts({ post }) {
     const dispatch = useDispatch();
     const selectUser = (state) => state.auth.user
     const user = useSelector(selectUser)
+    const navigate = useNavigate()
     const userId = user._id || ""
     const [isOpen, setIsOpen] = useState(false)
     const [editPost, setEditPost] = useState(null)
@@ -42,10 +45,16 @@ function Posts({ post }) {
     const [commentsCount, setCommentsCount] = useState(0)
     const [isSavedByUser, setIsSavedByUser] = useState(user?.savedPost.includes(post._id))
     const [reportModal, setReportModal] = useState(false)
+    const [showCategory, setShowCategoryModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const socket = useRef();
 
     const images = post.imageUrl
 
     useEffect(() => {
+        socket.current = io(BASE_URL)
+        socket?.current?.emit("addUser", user._id);
+
         const postId = post._id
         getCommentsCount(postId)
             .then((response) => {
@@ -54,7 +63,8 @@ function Posts({ post }) {
             .catch((error) => {
                 console.log(error.message);
             });
-    })
+        console.log('user', user.savedPost);
+    }, [])
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen)
@@ -92,8 +102,10 @@ function Posts({ post }) {
         setEditPost(null)
     }
 
-    const handleLike = (postId, userId) => {
+    const handleLike = (postId, userId, receiverId) => {
         try {
+            console.log('s', receiverId);
+            socket.current.emit("sendNotification", { receiverId, senderName: user?.name, message: "liked your post" })
             likePost({ postId, userId })
                 .then((response) => {
                     const postData = response.data;
@@ -115,6 +127,12 @@ function Posts({ post }) {
         }
     }
 
+    useEffect(() => {
+        socket.current.on('getNotifications', ({ senderName, message, }) => {
+            toast.success(`${senderName} ${message}`)
+        });
+    }, [likeCount])
+
     const toggleLikedUserPopup = () => {
         setShowLikedUserPopup(!showLikedUserPopup)
     }
@@ -130,11 +148,13 @@ function Posts({ post }) {
 
     const handleSave = (postId, userId) => {
         try {
-            savePost({ postId, userId })
+            let category = selectedCategory
+            savePost({ postId, userId, category })
                 .then((response) => {
                     const userData = response.data
                     dispatch(loginSuccess({ user: userData }))
                     setIsSavedByUser(!isSavedByUser)
+                    handleShowCategory();
                 })
                 .catch((error) => {
                     toast.error(error.message);
@@ -144,11 +164,15 @@ function Posts({ post }) {
         }
     }
 
+    const handleShowCategory = () => {
+        setShowCategoryModal(!showCategory);
+    }
+
     return (
         <>
             <div className="lg:col-span-2 ms-96 w-12/12 pl-4 pt-4" id="posted">
                 <div className="flex  flex-col ">
-                    <div onDoubleClick={() => handleLike(post._id, user._id)} className="bg-white border p-4 mb-1 rounded-lg max-w-full">
+                    <div onDoubleClick={() => handleLike(post._id, user._id, post?.userId?._id)} className="bg-white border p-4 mb-1 rounded-lg max-w-full">
                         <div className="flex items-center mb-2">
                             <Link to={user._id === post?.userId?._id ? "/profile" : `/users-profile/${post?.userId?._id}`}
                                 className="flex items-center">
@@ -198,7 +222,7 @@ function Posts({ post }) {
                             <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
                                 <Carousel pauseOnHover slideInterval={5000} leftControl={<ChevronLeft color="white" />} rightControl={<ChevronRight color="white" />} >
                                     {images &&
-                                        images.map((image,index) => (
+                                        images.map((image, index) => (
                                             <img key={index} src={image} alt="description" />
                                         ))}
                                 </Carousel>
@@ -222,7 +246,7 @@ function Posts({ post }) {
                         <div className="flex items-center justify-between text-gray-500">
                             <div className="flex items-start space-x-4">
                                 <div className="flex flex-col items-center">
-                                    <button onClick={() => handleLike(post._id, user._id)} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1 transform transition-all duration-300 hover:scale-105">
+                                    <button onClick={() => handleLike(post._id, user._id, post?.userId?._id)} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1 transform transition-all duration-300 hover:scale-105">
                                         <Heart color={isLikedByUser ? " #7E3AF2" : "gray"}
                                             fill={isLikedByUser ? " #7E3AF2" : "none"}
                                             size={22} />
@@ -244,13 +268,24 @@ function Posts({ post }) {
                                     )}
 
                                 </div>
-                                <button onClick={() => handleSave(post._id, user._id)} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1 transform transition-all duration-300 hover:scale-105">
-                                    <Bookmark
-                                        color="gray"
-                                        fill={isSavedByUser ? "grey" : "none"}
-                                        size={22}
-                                    />
-                                </button>
+                                {isSavedByUser ? (
+                                    <button onClick={() => handleSave(post._id, user._id)} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1 transform transition-all duration-300 hover:scale-105">
+                                        <Bookmark
+                                            color="gray"
+                                            fill="grey"
+                                            size={22}
+                                        />
+                                    </button>
+                                ) : (
+                                    <button onClick={handleShowCategory} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1 transform transition-all duration-300 hover:scale-105">
+                                        <Bookmark
+                                            color="gray"
+                                            fill="none"
+                                            size={22}
+                                        />
+                                    </button>
+                                )}
+
                             </div>
                         </div>
                     </div>
@@ -303,6 +338,70 @@ function Posts({ post }) {
                     openReportModal={openReportModal}
                     closeReportModal={closeReportModal}
                 />
+            )}
+            {showCategory && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50">
+                    <div className="max-w-md w-full mx-auto rounded-lg shadow-lg">
+                        <div className="bg-white rounded-lg shadow-lg p-6 relative">
+                            <button
+                                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                                onClick={() => setShowCategoryModal(false)}
+                            >
+                                <X />
+                            </button>
+                            <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+                                Save Post Category
+                            </h2>
+                            {user?.savedPost.length > 0 ? (
+                                <div className="mb-4">
+                                    <label
+                                        className="block text-gray-700 font-medium mb-2"
+                                        htmlFor="category"
+                                    >
+                                        Select Category
+                                    </label>
+                                    <select
+                                        className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        id="category"
+                                        value={selectedCategory}
+                                        onChange={(e) => setSelectedCategory(e.target.value)}
+                                    >
+                                        <option value="">Choose a category</option>
+                                        {user?.savedPost.map(
+                                            (Category, index) => (
+                                                <option key={index} value={Category.category}>
+                                                    {Category.category}
+                                                </option>
+                                            )
+                                        )}
+                                    </select>
+                                    <button
+                                        onClick={() => handleSave(post._id, user._id)}
+                                        className="w-full px-4 py-2 rounded-md bg-blue-500 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4"
+                                        type="button"
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center">
+                                    <p className="text-gray-600 mb-4">
+                                        You don't have any categories yet.
+                                    </p>
+                                    <button
+                                        onClick={() => {
+                                            navigate("/saved-post");
+                                        }}
+                                        className="px-4 py-2 rounded-md bg-blue-500 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                        type="button"
+                                    >
+                                        Create Category
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
             )}
         </>
     )

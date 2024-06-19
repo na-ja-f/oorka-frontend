@@ -23,6 +23,7 @@ import Premium from "../components/Premium";
 import PaymentSuccess from "../components/PaymentSuccess";
 import PaymentFailed from "../components/PaymentFailed";
 import Notifications from "../components/Notifications";
+import More from "../components/More";
 
 const appRouter = createBrowserRouter([
     {
@@ -57,6 +58,10 @@ const appRouter = createBrowserRouter([
             {
                 path: '/notifications',
                 element: <Notifications />
+            },
+            {
+                path: '/settings',
+                element: <More />
             },
         ]
     },

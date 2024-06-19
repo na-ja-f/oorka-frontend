@@ -33,6 +33,8 @@ export const postUrls = {
     savePost: 'post/save-post',
     getSavedPost: 'post/saved-post',
     reportPost: "/post/report-post",
+    getSavedCategories: "/post/get-categories",
+    createCategory: "/post/create-category"
 }
 
 export const adminUrl = {
@@ -74,6 +76,7 @@ export const chatUrl = {
     setMessageRead: "/chat/set-message-read",
     getUnreadMessages: '/chat/get-unread-messages',
     addChatGroup: "/chat/add-chat-group",
+    getMembers: "/chat/get-members"
 }
 
 export const storyUrl = {

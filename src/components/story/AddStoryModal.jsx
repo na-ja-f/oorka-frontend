@@ -16,6 +16,7 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
     const userId = user._id || "";
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isVideo, setIsVideo] = useState(false);
     const [isCroppeSelected, setIsCroppeSelected] = useState(false);
     const [croppedImage, setCroppedImage] = useState("");
     const fileInputRef = useRef(null);
@@ -29,19 +30,31 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
         onSubmit: async () => {
             setIsLoading(true);
             let imageUrls = "";
+            let isVideo = false
             const response = await fetch(croppedImage);
             const blob = await response.blob();
-
+            console.log('res', response, blob);
             const formData = new FormData();
             formData.append("file", blob);
             formData.append("upload_preset", "fqmpgsjl");
+            // Determine the correct Cloudinary upload URL based on the MIME type
+            let uploadUrl;
+            if (blob.type.startsWith('image/')) {
+                uploadUrl = "https://api.cloudinary.com/v1_1/dg5lcmwvr/image/upload";
+            } else if (blob.type.startsWith('video/')) {
+                isVideo = true
+                uploadUrl = "https://api.cloudinary.com/v1_1/dg5lcmwvr/video/upload";
+            } else {
+                throw new Error('Unsupported file type');
+            }
 
             try {
                 const res = await axios.post(
-                    "https://api.cloudinary.com/v1_1/dg5lcmwvr/image/upload",
-                    formData
-                );
+                    uploadUrl,
+                    formData,
+                )
 
+                console.log('res', res);
                 const imageUrl = res.data.secure_url;
                 imageUrls = imageUrl;
             } catch (error) {
@@ -51,6 +64,7 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
             addStory({
                 userId,
                 imageUrls,
+                isVideo
             })
                 .then((response) => {
                     const data = response.data;
@@ -80,7 +94,7 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
     };
 
     const handleButtonClick = () => {
-        fileInputRef.current?.setAttribute("accept", "image/*");
+        fileInputRef.current?.setAttribute("accept", "image/*,video/*");
         fileInputRef.current?.click();
     };
 
@@ -119,7 +133,7 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
                                         </div>
                                     )}
 
-                                    {croppedImage && !formik.errors.images && (
+                                    {croppedImage && !formik.errors.images && !isVideo && (
                                         <div className="flex mt-5 gap-4">
                                             <div>
                                                 {
@@ -127,6 +141,22 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
                                                         style={{ borderRadius: "10px" }}
                                                         src={croppedImage}
                                                         alt={`Preview `}
+                                                    />
+                                                }
+                                            </div>
+                                        </div>
+                                    )}
+                                    {croppedImage && !formik.errors.images && isVideo && (
+                                        <div className="flex mt-5 gap-4">
+                                            <div>
+                                                {
+                                                    <video
+                                                        style={{ borderRadius: "10px" }}
+                                                        src={croppedImage}
+                                                        alt={`Preview `}
+                                                        autoPlay
+                                                        loop
+                                                        controls
                                                     />
                                                 }
                                             </div>
@@ -158,14 +188,15 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
                                     const files = e.target.files;
                                     if (files && files.length > 0) {
                                         const file = files[0];
-                                        if (!file.type.startsWith("image/")) {
-                                            toast.error("Please select an image file.");
-                                            return;
+                                        if (file.type.startsWith("image/")) {
+                                            setIsCroppeSelected(!isCroppeSelected);
                                         }
                                         const imageUrl = URL.createObjectURL(file);
-                                        setIsCroppeSelected(!isCroppeSelected);
-
                                         formik.setFieldValue("images", imageUrl);
+                                        if (!file.type.startsWith("image/")) {
+                                            setIsVideo(true)
+                                            setCroppedImage(imageUrl)
+                                        }
                                     }
                                 }}
                             />

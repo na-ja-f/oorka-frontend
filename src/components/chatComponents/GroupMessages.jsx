@@ -6,7 +6,8 @@ import Picker from "@emoji-mart/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import VoiceRecorder from "./VoiceRecorder";
-import { addGroupMessage, getGroupMessages } from "../../services/api/user/apiMethods";
+import { addGroupMessage, getGroupMessages, getGroupMembers } from "../../services/api/user/apiMethods";
+import GroupMembers from "./GroupMembers";
 
 
 function GroupMessages({ messages, setMessages, user, currentChat, socket }) {
@@ -19,12 +20,18 @@ function GroupMessages({ messages, setMessages, user, currentChat, socket }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
     const scrollRef = useRef();
+    const [members, setMembers] = useState([])
+    const [isMembersModal, setIsMembersModal] = useState(false);
 
     useEffect(() => {
         const currentChatId = currentChat?._id;
+        console.log('this is currentchat', currentChat?._id);
         getGroupMessages(currentChatId).then((response) => {
-            console.log(response.data);
             setMessages(response.data);
+        });
+        getGroupMembers(currentChatId).then((response) => {
+            console.log('members', response.data[0].members);
+            setMembers(response.data[0].members);
         });
     }, [currentChat]);
 
@@ -33,6 +40,10 @@ function GroupMessages({ messages, setMessages, user, currentChat, socket }) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [messages]);
+
+    const handleMembersModal = () => {
+        return setIsMembersModal(!isMembersModal)
+    }
 
     const togglePinDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -168,7 +179,7 @@ function GroupMessages({ messages, setMessages, user, currentChat, socket }) {
                     <Search />
                 </button>
                 <button
-                    type="button"
+                    type="button" onClick={handleMembersModal}
                     className=" self-center hidden p-2 ml-2 text-gray-500 rounded-full md:block focus:outline-none hover:text-gray-600 hover:bg-gray-300"
                 >
                     <svg
@@ -352,6 +363,11 @@ function GroupMessages({ messages, setMessages, user, currentChat, socket }) {
                     />
                 )}
             </div>
+            {isMembersModal && (
+                <GroupMembers
+                    members={members}
+                    onClose={handleMembersModal} />
+            )}
         </div>
     )
 }
