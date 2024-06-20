@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body {
+  /* background-color: rgb(243,244,246); */
   background-color: rgb(243,244,246);
   font-family: "Poppins", sans-serif;
 }
@@ -22,7 +23,7 @@ body {
 }
 
 .image-preview {
-  width: 400px;
+  max-width: 400px;
   margin: 10px;
   border-radius: 10px;
 }

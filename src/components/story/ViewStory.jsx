@@ -1,11 +1,13 @@
 import { X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { useSelector } from "react-redux";
 import { Smile } from "lucide-react";
 import { addMessage, addConversation } from "../../services/api/user/apiMethods";
 import { toast } from "sonner";
+import { io } from "socket.io-client";
+import { BASE_URL } from '../../constants/baseURL'
 
 
 
@@ -15,6 +17,10 @@ function ViewStory({ story, onClose }) {
     const numStories = story.stories.length;
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [newMessage, setNewMessage] = useState("");
+    const socket = useRef();
+    useEffect(() => {
+        socket.current = io(BASE_URL)
+    }, [])
 
     const selectUser = (state) => state.auth.user;
     const user = useSelector(selectUser)
@@ -83,6 +89,25 @@ function ViewStory({ story, onClose }) {
                 formData.append("text", newMessage);
                 formData.append("messageType", messageType);
 
+                const receiverId = receiver
+
+                socket.current.emit("sendMessage", {
+                    senderId: userId,
+                    receiverId,
+                    text: newMessage,
+                    messageType,
+                    file: file?.name,
+                });
+
+                socket.current.emit("sendStoryReply", {
+                    senderId: userId,
+                    senderName: user.name,
+                    receiverId,
+                    text: newMessage,
+                    // messageType,
+                    // file: file?.name,
+                });
+
 
                 addMessage(formData)
                     .then((response) => {
@@ -139,15 +164,7 @@ function ViewStory({ story, onClose }) {
                             </div>
                         ))}
                     </div>
-                    {!story.stories[currentIndex]?.isVideo &&
-                        <img
-                            src={story.stories[currentIndex].imageUrl}
-                            alt="Story"
-                            className="rounded-lg"
-                            style={{ width: "400px", height: "550px" }}
-                        />
-                    }
-                    {story.stories[currentIndex]?.isVideo &&
+                    {story.stories[currentIndex]?.isVideo === true ? (
                         <video
                             src={story.stories[currentIndex].imageUrl}
                             alt="Story"
@@ -156,6 +173,14 @@ function ViewStory({ story, onClose }) {
                             autoPlay
                             loop
                         />
+                    ) : (
+                        < img
+                            src={story.stories[currentIndex].imageUrl}
+                            alt="Story"
+                            className="rounded-lg"
+                            style={{ width: "400px", height: "550px" }}
+                        />
+                    )
                     }
 
                     <div className="absolute top-2/4 left-0 transform -translate-y-2/4 w-full flex justify-between">

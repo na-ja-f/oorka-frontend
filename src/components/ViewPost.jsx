@@ -10,7 +10,7 @@ import { Modal } from "flowbite-react";
 import LikedUsers from "./LikedUsers";
 import { addComment, deleteComment, getComments, replyComment } from "../services/api/user/apiMethods";
 
-function ViewPost({ post }) {
+function ViewPost({ post, socket }) {
     const selectUser = (state) => state.auth.user;
     const user = useSelector(selectUser)
     const userId = user._id || ""
@@ -83,12 +83,14 @@ function ViewPost({ post }) {
 
     const commentHandleSubmit = (values, { resetForm }) => {
         try {
-            console.log('hello');
             const commentData = {
                 postId: post._id,
                 userId: userId,
                 comment: values.comment
             }
+
+            socket.current.emit("sendNotification", { receiverId:post.userId._id, senderName: user?.name, message: "commented on your post" })
+
             addComment(commentData)
                 .then((response) => {
                     const data = response.data;
@@ -113,7 +115,6 @@ function ViewPost({ post }) {
 
     const ReplyCommentHandleSubmit = (values, { resetForm }) => {
         try {
-            console.log('hi');
             const commentData = {
                 commentId: parentCommentId,
                 userId: userId,

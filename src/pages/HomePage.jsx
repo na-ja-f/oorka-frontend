@@ -44,13 +44,13 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full w-full">
         <div>
-          <div className=" ms-96 mt-6 w-12/12">
+          <div className="lg:ms-96">
             <Story />
           </div>
           <div>
-            <button onClick={() => setShowModal(true)} className="fixed bottom-8 right-32 mb-8 mr-8 bg-myViolet hover:bg-violet-900 text-white font-bold py-5 px-5 rounded-2xl shadow-xl shadow-gray-600">
+            <button onClick={() => setShowModal(true)} className="fixed bottom-10 right-4 z-50 mb-8 mr-8 bg-myViolet hover:bg-violet-900 text-white font-bold py-5 px-5 rounded-2xl shadow-xl shadow-gray-600">
               <ImagePlus size={30} />
             </button>
           </div>
@@ -74,7 +74,9 @@ function HomePage() {
         )}
         {showModal && <AddPost setNewPost={setPosts} setShowModal={setShowModal} />}
       </div>
-      <UserSuggestionBar />
+      <div className="hidden lg:block">
+        <UserSuggestionBar />
+      </div>
     </>
   )
 }

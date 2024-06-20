@@ -91,14 +91,14 @@ function ProfileEdit({ user, onClose }) {
           <p className="font-semibold text-2xl m-3">Edit Profile</p>
           <hr />
           <form onSubmit={formik.handleSubmit}>
-            <div className="flex">
+            <div className="lg:flex">
               <div className="">
                 <div onClick={handleButtonClick} className="image-preview flex items-center bg-white shadow-lg justify-center h-36 cursor-pointer">
                   {!croppedImage && (
-                    <img src={user.profileImg} alt="profile" style={{ height: "100px", borderRadius: "10px" }} />
+                    <img src={user.profileImg} alt="profile" style={{ height: "100px" }} />
                   )}
                   {croppedImage && !formik.errors.image && (
-                    <img src={croppedImage} alt="croppedimage" style={{ height: "140px", borderRadius: "10px" }} />
+                    <img src={croppedImage} alt="croppedimage" style={{ height: "140px"}} />
                   )}
                 </div>
                 {formik.values.image && isCropSelected && !formik.errors.image && (

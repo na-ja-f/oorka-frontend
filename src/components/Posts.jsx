@@ -53,7 +53,6 @@ function Posts({ post }) {
 
     useEffect(() => {
         socket.current = io(BASE_URL)
-        socket?.current?.emit("addUser", user._id);
 
         const postId = post._id
         getCommentsCount(postId)
@@ -127,12 +126,6 @@ function Posts({ post }) {
         }
     }
 
-    useEffect(() => {
-        socket.current.on('getNotifications', ({ senderName, message, }) => {
-            toast.success(`${senderName} ${message}`)
-        });
-    }, [likeCount])
-
     const toggleLikedUserPopup = () => {
         setShowLikedUserPopup(!showLikedUserPopup)
     }
@@ -170,24 +163,25 @@ function Posts({ post }) {
 
     return (
         <>
-            <div className="lg:col-span-2 ms-96 w-12/12 pl-4 pt-4" id="posted">
+            <div className="w-full lg:w-6/12 lg:col-span-2 lg:ms-96 pl-4 pt-4" id="posted">
                 <div className="flex  flex-col ">
                     <div onDoubleClick={() => handleLike(post._id, user._id, post?.userId?._id)} className="bg-white border p-4 mb-1 rounded-lg max-w-full">
-                        <div className="flex items-center mb-2">
+                        <div className="flex items-center justify-between mb-2">
                             <Link to={user._id === post?.userId?._id ? "/profile" : `/users-profile/${post?.userId?._id}`}
                                 className="flex items-center">
                                 <img src={post?.userId?.profileImg} alt="user" className="h-10 mr-2 rounded-full" />
                                 <p className="text-gray-800 font-bold mx-1">
                                     {post?.userId?.name}
                                 </p>
+                                <BadgeCheck size={22} color="white" fill="#7E3AF2" />
                             </Link>
-                            <div className="flex items-center">
+                            {/* <div className="flex items-center">
 
                                 {post.userId?.isVerified && (
                                     <BadgeCheck size={22} color="white" fill="#7E3AF2" />
                                 )}
-                            </div>
-                            <div style={{ marginLeft: "460px" }} className="text-gray-500 cursor-pointer">
+                            </div> */}
+                            <div className="text-gray-500 cursor-pointer">
                                 <button className="hover:bg-gray-50 rounded-full"
                                     onClick={toggleDropdown}>
                                     <EllipsisVertical />
@@ -218,8 +212,8 @@ function Posts({ post }) {
                                 )}
                             </div>
                         </div>
-                        <div className="mb-4 " style={{ width: "620px" }}>
-                            <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
+                        <div className="mb-4 w-full">
+                            <div className="h-96">
                                 <Carousel pauseOnHover slideInterval={5000} leftControl={<ChevronLeft color="white" />} rightControl={<ChevronRight color="white" />} >
                                     {images &&
                                         images.map((image, index) => (
@@ -319,7 +313,7 @@ function Posts({ post }) {
             {showCommentModal && (
                 <div className="addpost-popup z-50">
                     <div className="addpost-popup">
-                        <ViewPost post={post} />
+                        <ViewPost post={post} socket={socket} />
                         <div className="fixed right-10 top-10">
                             <button
                                 className="close-button me-5"

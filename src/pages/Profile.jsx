@@ -65,12 +65,16 @@ function Profile() {
     }
 
     return (
-        <div className="ml-5 mt-11 w-8/12 ">
-            <div className=" ms-96 flex mt-5 flex-col shadow-2xl bg-white p-4 pb-3 pl-5 w-11/12 rounded-xl">
-                <div className="flex gap-20 ">
-                    <div className="gap-4">
-                        <img className=" h-36 rounded-full border-2 border-myViolet" src={user.profileImg} alt="profile" />
-                        <div className="flex items-top ml-3 justify-center gap-2">
+        <div className="w-full lg:w-8/12">
+            <div className="lg:ms-96 flex flex-col shadow-2xl bg-white p-4 pb-3 w-full lg:w-11/12 rounded-xl">
+                <div className="flex flex-col lg:flex-row lg:gap-20 gap-6">
+                    <div className="flex flex-col items-center">
+                        <img
+                            className="h-36 w-36 rounded-full border-2 border-myViolet"
+                            src={user.profileImg}
+                            alt="profile"
+                        />
+                        <div className="flex items-center justify-center gap-2">
                             <p className="font-medium text-lg mt-2">{user?.name}</p>
                             {user?.isVerified && (
                                 <svg
@@ -85,16 +89,21 @@ function Profile() {
                                 </svg>
                             )}
                         </div>
-                        <p className="text-sm flex justify-center text-gray-600">{user?.bio}</p>
-
+                        <p className="text-sm text-gray-600 text-center">{user?.bio}</p>
                     </div>
-                    <div className="flex flex-col mt-4">
-                        <div className="flex gap-6 mt-5">
-                            <div onClick={handleFollowingModal} className="flex flex-col cursor-pointer items-center">
+                    <div className="flex flex-col items-center ">
+                        <div className="flex gap-6 lg:mt-5">
+                            <div
+                                onClick={handleFollowingModal}
+                                className="flex flex-col cursor-pointer items-center"
+                            >
                                 <p className="font-medium text-lg">{following.length}</p>
                                 <p className="text-sm">Following</p>
                             </div>
-                            <div onClick={handleFollowersModal} className="flex flex-col cursor-pointer items-center">
+                            <div
+                                onClick={handleFollowersModal}
+                                className="flex flex-col cursor-pointer items-center"
+                            >
                                 <p className="font-medium text-lg">{followers.length}</p>
                                 <p className="text-sm">Followers</p>
                             </div>
@@ -103,36 +112,40 @@ function Profile() {
                                 <p className="text-sm">Posts</p>
                             </div>
                         </div>
+                            <div
+                                onClick={() => setIsProfileEdit(true)}
+                                className="flex mt-4 gap-3 cursor-pointer"
+                            >
+                                <Tooltip content="Edit Profile" style="light">
+                                    <Pencil size={20} color="black" />
+                                </Tooltip>
+                                <p className="text-sm text-gray-500">Edit Profile</p>
+                            </div>
+                            <div
+                                className="flex gap-3 mt-4 cursor-pointer"
+                                onClick={() => navigate("/premium/plans")}
+                            >
+                                <Tooltip content="Get Verified" style="light">
+                                    <BadgeDollarSign className="cursor-pointer" color="black" />
+                                </Tooltip>
+                                <p className="text-sm text-gray-500">Get Premium</p>
+                            </div>
+
                     </div>
-                    <div className="flex flex-col gap-5 ml-10 mt-10">
-                        <div onClick={() => setIsProfileEdit(true)}
-                            className="flex gap-3 cursor-pointer">
-                            <Tooltip content="Edit Profile" style="light">
-                                <Pencil
-                                    size={20}
-                                    color="black"
-                                />
-                            </Tooltip>
-                            <p className="text-sm text-gray-500">Edit Profile</p>
-                        </div>
-                        <div className="flex gap-3 cursor-pointer" onClick={() => navigate("/premium/plans")}>
-                            <Tooltip content="Get Verified" style="light">
-                                <BadgeDollarSign
-                                    className=" cursor-pointer"
-                                    color="black"
-                                />
-                            </Tooltip>
-                            <p className="text-sm text-gray-500">Get Premium</p>
-                        </div>
-                    </div>
+                    {/* 
+                        
+                    </div> */}
                 </div>
             </div>
-            <div className="ms-96 mt-14 grid grid-cols-2 md:grid-cols-3 w-11/12 gap-3">
-                {posts && posts.map((post) => {
-                    return <div key={post._id}>
-                        <PostGallery post={post} />
-                    </div>
-                })}
+            <div className="lg:ms-96 mt-5 grid lg:grid-cols-3 sm:grid-cols-2 w-full lg:w-11/12 gap-4">
+                {posts &&
+                    posts.map((post) => {
+                        return (
+                            <div key={post._id}>
+                                <PostGallery post={post} />
+                            </div>
+                        );
+                    })}
             </div>
             {isProfileEdit && <ProfileEdit user={user} onClose={handleEditClose} />}
 
@@ -141,17 +154,20 @@ function Profile() {
                     followers={followers}
                     followingUsers={following}
                     setFollowingUsers={setFollowing}
-                    onClose={handleFollowersModal} />
+                    onClose={handleFollowersModal}
+                />
             )}
             {isFollowingModal && (
                 <FollowingList
                     currentUser={userId}
                     followingUsers={following}
                     setFollowingUsers={setFollowing}
-                    onClose={handleFollowingModal} />
+                    onClose={handleFollowingModal}
+                />
             )}
         </div>
-    )
+    );
+
 }
 
 export default Profile

@@ -81,21 +81,21 @@ function SavedPost() {
         }
     }
     return (
-        <div className="flex flex-col">
-            <div className="lg:col-span-2 ms-96 w-full pl-4 pt-4 mt-10">
-                <div className="mt-4 flex">
-                    <div className="w-full  px-4">
+        <div className="flex flex-col lg:w-10/12 h-full">
+            <div className="lg:col-span-2  w-full">
+                <div className="">
+                    <div className="w-screen">
                         <div className="bg-white rounded-3xl my-1 mx-5  p-6">
-                            <div className="flex justify-between items-center mb-6">
-                                <h1 className="text-3xl font-bold">Collections</h1>
+                            <div className="lg:flex justify-between items-center mb-6">
+                                <h1 className="text-3xl lg:ms-64 font-bold">Collections</h1>
                                 <div className="relative">
                                     {categories.length > 0 ? (
                                         <select
                                             value={selectedCategory}
                                             onChange={(e) => setSelectedCategory(e.target.value)}
-                                            className="appearance-none rounded-md bg-gray-200 py-2 px-4 pr-8 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="appearance-none mt-4 rounded-md bg-gray-200 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         >
-                                            <option value="">Select Category</option>
+                                            <option className="w-10" value="">Select Category</option>
                                             {categories.map((category) => (
                                                 <option key={category} value={category}>
                                                     {category}
@@ -103,7 +103,7 @@ function SavedPost() {
                                             ))}
                                         </select>
                                     ) : (
-                                        <p>No categories available</p>
+                                        <p>No categories</p>
                                     )}
 
                                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
@@ -120,23 +120,17 @@ function SavedPost() {
 
                             <button
                                 onClick={() => setCreateModal(true)}
-                                className="bg-indigo-700 text-white px-4 py-2 rounded shadow-md"
+                                className="bg-indigo-700 text-white lg:ms-64 px-4 py-2 rounded shadow-md"
                             >
                                 Create category
                             </button>
-
-                            <div className="mt-4">
-                                <h2 className="text-2xl font-semibold">
-                                    Posts in {selectedCategory}
-                                </h2>
-                            </div>
                         </div>
                     </div>
                 </div>
                 {
                     createModal && (
                         <div className="fixed top-0 right-0 left-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center">
-                            <div className="relative p-4 w-full max-w-md">
+                            <div className="relative p-4 w-full ">
                                 <div className="relative bg-white rounded-lg shadow">
                                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                                         <h3 className="text-lg font-semibold text-gray-900">
@@ -179,7 +173,7 @@ function SavedPost() {
                                                     id="name"
                                                     value={categoryName}
                                                     onChange={(e) => setCategoryName(e.target.value)}
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                                                     placeholder="Enter category name"
                                                     required
                                                 />
@@ -200,18 +194,13 @@ function SavedPost() {
             </div>
             {posts.length > 0 ? (
                 posts.map((post) => (
-                    <div key={post._id} className="mb-4 ml-16">
+                    <div key={post._id} className="mb-4">
                         <Posts post={post} />
                     </div>
                 ))
             ) : (
                 <div className="neumorphism-placeholder p-8 rounded-lg shadow-neumorphism">
-                    <div className="flex flex-col items-center ms-96 justify-center">
-                        <img
-                            src="https://www.cortfurnitureoutlet.com/assets/images/no-image.png"
-                            alt="No posts found"
-                            className="neumorphism-image w-48 h-48 mb-4"
-                        />
+                    <div className="flex flex-col items-center lg:ms-64 justify-center">
                         <p className="text-gray-500 text-center">
                             There are no posts available for the selected category.
                         </p>
@@ -223,24 +212,3 @@ function SavedPost() {
 }
 
 export default SavedPost
-
-// < div className = "mt-11" >
-//     <div className="flex flex-col  h-full">
-//         {loading ? (
-//             <div>
-//                 {Array.from({ length: 5 }).map((_, index) => (
-//                     <div key={index}>
-//                         <PostShimmer />
-//                     </div>
-//                 ))}
-//             </div>
-//         ) : (
-//             // Render posts when not loading
-//             <div className="">
-//                 {posts.map((post) => (
-//                     <Posts key={post._id} post={post} />
-//                 ))}
-//             </div>
-//         )}
-//     </div>
-//     </div >

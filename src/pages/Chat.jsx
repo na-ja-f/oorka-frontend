@@ -194,6 +194,7 @@ function Chat() {
                 setConversations={setConversations}
                 lastMessages={lastMessages}
                 lastGroupMessages={lastGroupMessages}
+                currentChat={currentChat}
             />
             {
                 !isGroup && currentChat && (

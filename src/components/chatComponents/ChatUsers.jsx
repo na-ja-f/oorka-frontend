@@ -17,6 +17,7 @@ function ChatUsers({
     isGroup,
     setIsGroup,
     setUserGroups,
+    currentChat,
     setConversations,
     lastMessages,
     lastGroupMessages }) {
@@ -39,7 +40,9 @@ function ChatUsers({
     }, [])
 
     return (
-        <div className="relative flex flex-col  h-full bg-white border-r border-gray-300 shadow-xl md:block transform transition-all duration-500 ease-in-out" style={{ width: "24rem" }}>
+        <div className={`${currentChat ? "hidden" : "block"
+            } lg:bock relative flex flex-col  h-full bg-white border-r border-gray-300 shadow-xl md:block transform transition-all duration-500 ease-in-out`}
+            style={{ width: "24rem" }}>
             <div className="flex justify-between px-3 pt-1 text-white">
                 <div className="flex items-center w-full py-2">
                     <button

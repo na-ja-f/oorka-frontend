@@ -43,10 +43,10 @@ function FollowRequests() {
 
     return (
         <>
-            <div className="mt-10 flex flex-col  h-screen">
-                <div className="z-40 mt-3">
-                    <div className="lg:col-span-2 ms-96 w-12/12 p-3" id="posted">
-                        <div className="flex justify-between bg-white p-4 ml-2 rounded-lg" style={{ width: "660px" }}>
+            <div className="flex flex-col h-screen">
+                <div className="z-40">
+                    <div className="lg:col-span-2 lg:ms-80 w-screen p-3" id="posted">
+                        <div className="flex justify-between bg-white p-4 rounded-lg w-full">
                             <h1 className=" text-xl font-semibold"> Follow Requests</h1>
                         </div>
                     </div>

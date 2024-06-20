@@ -41,11 +41,9 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
             let uploadUrl;
             if (blob.type.startsWith('image/')) {
                 uploadUrl = "https://api.cloudinary.com/v1_1/dg5lcmwvr/image/upload";
-            } else if (blob.type.startsWith('video/')) {
+            } else {
                 isVideo = true
                 uploadUrl = "https://api.cloudinary.com/v1_1/dg5lcmwvr/video/upload";
-            } else {
-                throw new Error('Unsupported file type');
             }
 
             try {

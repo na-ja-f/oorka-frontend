@@ -89,44 +89,11 @@ function UserSuggestionBar() {
 
     return (
         <>
-            <div className="fixed shadow-xl right-36 lg:col-span-2 ms-10 h-4/6 w-1/5 p-4 bg-white rounded-lg  mt-16 overflow-scroll" id="posted">
+            <div className="fixed hidden lg:block lg:col-span-2 h-full w-64 p-4 right-0 bg-white rounded-lg z-10 overflow-scroll shadow-2xl" id="posted">
                 <h1 className="mb-4 text-gray-600 text-center font-semibold">
                     SUGGESTIONS
                 </h1>
                 <div className="flex flex-col">
-                    <div className="flex items-center w-full mb-3 max-w-sm mx-auto">
-                        <label htmlFor="simple-search" className="sr-only">
-                            Search
-                        </label>
-                        <div className="relative w-full">
-                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <UserRoundSearch size={20} color="gray" />
-                            </div>
-                            <input
-                                type="text"
-                                id="simple-search"
-                                value={searchValue}
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Search"
-                                onChange={(e) => {
-                                    setSearchValue(e.target.value);
-                                    if (e.target.value.trim() !== "") {
-                                        handleSearch();
-                                    } else {
-                                        setLoading(true);
-                                        getUserSuggestions({ userId })
-                                            .then((response) => {
-                                                setUsers(response.data.suggestedUsers);
-                                                setLoading(false);
-                                            })
-                                            .catch((error) => {
-                                                console.log(error.message);
-                                            });
-                                    }
-                                }}
-                            />
-                        </div>
-                    </div>
                     {loading ? (
                         <div className=""></div>
                     ) : (

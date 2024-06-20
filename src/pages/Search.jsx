@@ -60,8 +60,8 @@ function SearchBar() {
     };
 
     return (
-        <div className="lg:ml-5 w-full p-2 lg:w-8/12">
-            <div className="ms-96 mt-16 text-gray-600">
+        <div className=" w-full p-2 lg:w-8/12">
+            <div className="lg:ms-96 mt-16 text-gray-600">
                 <input
                     type="search"
                     // onClick={() => Navigate('/explore')}

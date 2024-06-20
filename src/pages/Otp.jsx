@@ -110,7 +110,7 @@ function Otp() {
     return (
         <>
             <div className="bg-gray-100 flex justify-center items-center h-screen">
-                <div className="lg:p-36 md:p-52 sm:20 -ml-20 p-8 w-full lg:w-1/2">
+                <div className="p-8 w-full lg:w-1/2">
                     <div className="flex flex-col items-center">
                         <h1 className="text-4xl font-semibold mb-2">Enter Your OTP</h1>
                         <h1 className="text-md font-normal mb-4">

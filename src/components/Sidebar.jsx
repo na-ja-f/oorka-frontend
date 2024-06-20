@@ -21,21 +21,7 @@ function Sidebar() {
 
     return (
         <>
-            <aside className="fixed shadow-2xl z-30flex lg:ml-24 flex-col w-64 px-4 py-5 mt-16 overflow-none rounded-xl rtl:border-r-0 rtl:border-l bg-white  dark:border-gray-700">
-                {/* <div className="flex flex-col items-center">
-                    <img
-                        className="object-cover h-28  mx-2 rounded-full shadow-sm shadow-myViolet"
-                        src={user.profileImg}
-                        alt="avatar"
-                    />
-                    <div className="flex items-center ju">
-                        <h4 className="mx-2 mt-4 font-serif font-semibold text-xl">
-                            {user ? user.username : ""}
-                        </h4>
-                    </div>
-                    <hr className="w-full border border-gray-400 mt-4 shadow-2xl" />
-                </div> */}
-
+            <aside className="fixed shadow-2xl z-50 flex flex-col w-64 px-4 py-5 h-full overflow-none rounded-xl rtl:border-r-0 rtl:border-l bg-white  dark:border-gray-700">
                 <div className="flex flex-col justify-between flex-1 mt-5">
                     <nav>
                         <NavLink
@@ -45,7 +31,7 @@ function Sidebar() {
                                 : "text-myText"
                                 }`}
                         >
-                            <LayoutGrid />
+                            <LayoutGrid size={30}/>
                             <span className="ml-5">Dashboard</span>
                         </NavLink>
                         <NavLink
@@ -55,7 +41,7 @@ function Sidebar() {
                                 }  rounded-lg`}
                             to={"/search"}
                         >
-                            <Search />
+                            <Search size={30}/>
                             <span className="mx-5 ">Search</span>
                         </NavLink>
                         <NavLink
@@ -65,7 +51,7 @@ function Sidebar() {
                                 }  rounded-lg`}
                             to={"/notifications"}
                         >
-                            <BellRing />
+                            <BellRing size={30}/>
                             <span className="mx-5 ">Notifications</span>
                         </NavLink>
                         <NavLink
@@ -75,7 +61,7 @@ function Sidebar() {
                                 }  rounded-lg`}
                             to={"/chat"}
                         >
-                            <MessageSquareText />
+                            <MessageSquareText size={30}/>
                             <span className="mx-5 ">Messages</span>
                         </NavLink>
                         <NavLink
@@ -85,7 +71,7 @@ function Sidebar() {
                                 }  rounded-lg`}
                             to={"/follow-requests"}
                         >
-                            <UserPlus />
+                            <UserPlus size={30}/>
                             <span className="mx-5 ">Requests</span>
                         </NavLink>
                         <NavLink
@@ -95,7 +81,7 @@ function Sidebar() {
                                 }  rounded-lg`}
                             to={"/saved-post"}
                         >
-                            <Bookmark />
+                            <Bookmark size={30}/>
                             <span className="mx-5 ">Saved Posts</span>
                         </NavLink>
                         <NavLink
@@ -105,7 +91,7 @@ function Sidebar() {
                                 }  rounded-lg`}
                             to={"/profile"}
                         >
-                            <User />
+                            <User size={30}/>
                             <span className="mx-5 ">Profile</span>
                         </NavLink>
                         <NavLink
@@ -115,7 +101,7 @@ function Sidebar() {
                                 }  rounded-lg`}
                             to={"/settings"}
                         >
-                            <ListCollapse />
+                            <ListCollapse size={30}/>
                             <span className="mx-5 ">More</span>
                         </NavLink>
                         {/* Add more navigation links */}
@@ -125,7 +111,7 @@ function Sidebar() {
                     onClick={handleLogout}
                     className="flex text-myText cursor-pointer mt-32 px-4"
                 >
-                    <LogOut />
+                    <LogOut size={30}/>
                     <button className="mx-5 ">Logout</button>
                 </div>
             </aside>
