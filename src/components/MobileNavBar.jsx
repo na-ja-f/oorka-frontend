@@ -15,7 +15,7 @@ function MobileNavBar() {
 
     return (
         <>
-            <aside className="fixed lg:hidden bottom-0 left-0 z-50 flex flex-col w-full px-1 py-5 overflow-none border-r rounded-xl rtl:border-r-0 rtl:border-l bg-white dark:border-gray-700">
+            <aside className="fixed lg:hidden bottom-0 left-0 z-50 flex flex-col w-full px-1 py-10 overflow-none border-r rounded-xl rtl:border-r-0 rtl:border-l bg-white dark:border-gray-700">
                 <div className="flex justify-between items-center">
                     <NavLink
                         to={"/"}

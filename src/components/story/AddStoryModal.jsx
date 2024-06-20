@@ -40,6 +40,7 @@ function AddStoryModal({ setAddStoryModal, setUserStory }) {
             // Determine the correct Cloudinary upload URL based on the MIME type
             let uploadUrl;
             if (blob.type.startsWith('image/')) {
+                isVideo = false
                 uploadUrl = "https://api.cloudinary.com/v1_1/dg5lcmwvr/image/upload";
             } else {
                 isVideo = true

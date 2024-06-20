@@ -88,7 +88,7 @@ function UserDetails({ user, connections, isConnected }) {
     }
 
     return (
-        <div className=" ms-96 flex mt-5 flex-col shadow-2xl bg-white p-4 pb-3 pl-5 w-11/12 rounded-xl">
+        <div className=" lg:ms-96 flex mt-5 flex-col shadow-2xl bg-white p-4 pb-3 pl-5 lg:w-11/12 rounded-xl">
             <div className="flex gap-20">
                 <div className="gap-4 m-5">
                     <img className=" h-36 w-36 rounded-full" src={user?.profileImg} alt="profilepic" />

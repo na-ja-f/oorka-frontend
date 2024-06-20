@@ -43,7 +43,7 @@ function UsersProfile() {
     }, [])
 
     return (
-        <div className="ml-5 mt-11 w-8/12">
+        <div className="ml-5 mt-11 lg:w-8/12">
             {!loading && <UserDetails user={user} connections={connections} isConnected={isConnected} />}
 
             {isConnected && (
@@ -55,7 +55,7 @@ function UsersProfile() {
                             <PostShimmer />
                         </div>
                     ) : (
-                        <div className="ms-96 mt-14 grid grid-cols-2 md:grid-cols-3 w-11/12 gap-3">
+                        <div className="lg:ms-96 mt-14 grid grid-cols-2 md:grid-cols-3 w-11/12 gap-3">
                             {Post.length !== 0 && Post.map((post) => (
                                 <PostGallery key={post._id} post={post} />
                             ))}
