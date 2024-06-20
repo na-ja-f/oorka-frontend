@@ -75,9 +75,9 @@ function Story() {
                             <div className={`p-0.5 rounded-full ${bgGradientClass}`}>
                                 <div className="bg-white block rounded-full p-0.5  hover:scale-110 transform transition" >
                                     {!story.stories[0].isVideo === true ? (
-                                        <img className="h-18 w-18 rounded-full object-fill" src={story.stories[0].imageUrl} alt="cute kitty" />
+                                        <img className="h-16 w-16 rounded-full object-fill" src={story.stories[0].imageUrl} alt="cute kitty" />
                                     ) : (
-                                        <video className="h-18 w-18 rounded-full object-fill" src={story.stories[0].imageUrl} alt="cute kitty" />
+                                        <video className="h-16 w-16 rounded-full object-fill" src={story.stories[0].imageUrl} alt="cute kitty" />
                                     )}
 
                                 </div>
